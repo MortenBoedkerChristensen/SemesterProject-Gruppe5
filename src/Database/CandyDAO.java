@@ -7,7 +7,8 @@ import Model.Candy;
 
 public interface CandyDAO {
 	
-	List<Candy> getAllProducts() throws DataAccessException;
+	List<Candy> getAllCandy() throws DataAccessException;
+	//skal vi have en liste af alle slik samlet eller skal vi have en liste af alle slik i hver kategori?
 
 	void delete(int id) throws DataAccessException;
 
