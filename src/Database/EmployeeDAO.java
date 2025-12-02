@@ -7,7 +7,7 @@ import Model.Employee;
 
 public interface EmployeeDAO {
 	
-	List<Employee> getAllProducts() throws DataAccessException;
+	List<Employee> getAllEmployees() throws DataAccessException;
 
 	void delete(int id) throws DataAccessException;
 

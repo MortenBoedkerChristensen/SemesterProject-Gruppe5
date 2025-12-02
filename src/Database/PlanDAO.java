@@ -7,7 +7,7 @@ import Model.Plan;
 
 public interface PlanDAO {
 	
-	List<Plan> getAllProducts() throws DataAccessException;
+	List<Plan> getPlans() throws DataAccessException;
 
 	void delete(int id) throws DataAccessException;
 
