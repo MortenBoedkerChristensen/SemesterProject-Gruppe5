@@ -6,7 +6,7 @@ public class GourmetBolcher extends Candy {
         super(id, type, price, stock, minStock, maxStock, date);
     }
 
-    public GourmetBolcher(Recipes recipe) {
+    public GourmetBolcher(String Gourmet, Recipes recipe) {
         super(
             recipe.getProductID(),  // id
             recipe.getName(),       // type / navn
