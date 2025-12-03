@@ -6,16 +6,17 @@ public class Lollipop extends Candy {
 		
 	}
 	
-	public Lollipop(String Lollipop, Recipes recipe) {
-		super(
-				recipe.getProductID(),  // id
-				recipe.getName(),       // type / navn
-				recipe.getDifficulty(), // pris? hvis vi vil have difficulty med skal vi lave om på constructoren i Candy
-				0,                      // stock – vælg startlager
-				0,                      // minStock – definer evt.
-				100,                    // maxStock – eller anden værdi
-				new java.sql.Date(System.currentTimeMillis()) // dato
-				);
+	public Lollipop(Candy candy, Recipes recipe) {
+	    super(
+	        recipe.getProductID(),      // id
+	        recipe.getName(),           // type
+	        candy.getPrice(),           // ← DU KALDER DEN SÅDAN HER
+	        candy.getStock(),           // stock — brug evt. candy's stock
+	        candy.getMinStock(),        // minStock
+	        candy.getMaxStock(),        // maxStock
+	        new java.sql.Date(System.currentTimeMillis())
+	    );
 	}
+
 
 }

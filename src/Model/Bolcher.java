@@ -5,16 +5,15 @@ public class Bolcher extends Candy {
 		super(id, type, price, stock, minStock, maxStock, date);
 		
 	}
-	
-	public Bolcher(Recipes recipe) {
-		super(
-				recipe.getProductID(),  // id
-				recipe.getName(),       // type / navn
-				recipe.getDifficulty(), // pris? hvis vi vil have difficulty med skal vi lave om på constructoren i Candy
-				0,                      // stock – vælg startlager
-				0,                      // minStock – definer evt.
-				100,                    // maxStock – eller anden værdi
-				new java.sql.Date(System.currentTimeMillis()) // dato
-				);
+	public Bolcher(Candy candy, Recipes recipe) {
+	    super(
+	        recipe.getProductID(),      // id
+	        recipe.getName(),           // type
+	        candy.getPrice(),           // price
+	        candy.getStock(),           // stock — brug evt. candy's stock
+	        candy.getMinStock(),        // minStock
+	        candy.getMaxStock(),        // maxStock
+	        new java.sql.Date(System.currentTimeMillis())
+	    );
 	}
 }

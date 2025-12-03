@@ -5,16 +5,17 @@ public class GourmetBolcher extends Candy {
     public GourmetBolcher(int id, String type, int price, int stock, int minStock, int maxStock, java.sql.Date date) {
         super(id, type, price, stock, minStock, maxStock, date);
     }
-
-    public GourmetBolcher(String Gourmet, Recipes recipe) {
-        super(
-            recipe.getProductID(),  // id
-            recipe.getName(),       // type / navn
-            recipe.getDifficulty(), // pris? hvis vi vil have difficulty med skal vi lave om på constructoren i Candy
-            0,                      // stock – vælg startlager
-            0,                      // minStock – definer evt.
-            100,                    // maxStock – eller anden værdi
-            new java.sql.Date(System.currentTimeMillis()) // dato
-        );
-    }
+    
+    
+    public GourmetBolcher(Candy candy, Recipes recipe) {
+	    super(
+	        recipe.getProductID(),      // id
+	        recipe.getName(),           // type
+	        candy.getPrice(),           // price
+	        candy.getStock(),           // stock — brug evt. candy's stock
+	        candy.getMinStock(),        // minStock
+	        candy.getMaxStock(),        // maxStock
+	        new java.sql.Date(System.currentTimeMillis())
+	    );
+	}
 }
