@@ -28,10 +28,10 @@ public class CandyDB {
 
     // INSERT
     public void insertCandy(int candyID, String type, int minStock, int maxStock,
-                            int price, Date date) {
+                            int price, Date date, int stock) {
 
-        String sql = "INSERT INTO candy (CandyID, Type, MinStock, MaxStock, Price, Date) "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO candy (CandyID, Type, MinStock, MaxStock, Price, Date, Stock) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -41,6 +41,7 @@ public class CandyDB {
             stmt.setInt(4, maxStock);
             stmt.setInt(5, price);
             stmt.setDate(6, date);
+            stmt.setInt(7, stock);
 
             stmt.executeUpdate();
 
@@ -61,12 +62,13 @@ public class CandyDB {
 
             if (rs.next()) {
                 candy = new Candy(
-                    rs.getInt("CandyID"),
-                    rs.getString("Type"),
-                    rs.getInt("Price"),
-                    rs.getInt("MinStock"),
-                    rs.getInt("MaxStock"),
-                    rs.getDate("Date")
+                		 rs.getInt("CandyID"),
+                         rs.getString("Type"),
+                         rs.getInt("Price"),
+                         rs.getInt("MinStock"),
+                         rs.getInt("MaxStock"),
+                         rs.getDate("Date"),
+                         rs.getInt("Stock")
                 );
             }
 
@@ -95,7 +97,8 @@ public class CandyDB {
                     rs.getInt("Price"),
                     rs.getInt("MinStock"),
                     rs.getInt("MaxStock"),
-                    rs.getDate("Date")
+                    rs.getDate("Date"),
+                    rs.getInt("Stock")
                 );
             }
 
@@ -109,7 +112,7 @@ public class CandyDB {
     // UPDATE
     public void updateCandy(Candy candy) {
 
-        String sql = "UPDATE candy SET Type = ?, MinStock = ?, MaxStock = ?, Price = ?, Date = ? "
+        String sql = "UPDATE candy SET Type = ?, MinStock = ?, MaxStock = ?, Price = ?, Date = ?, Stock = ? "
                    + "WHERE CandyID = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -119,7 +122,8 @@ public class CandyDB {
             stmt.setInt(3, candy.getMaxStock());
             stmt.setInt(4, candy.getPrice());
             stmt.setDate(5, candy.getDate());
-            stmt.setInt(6, candy.getCandyID());
+            stmt.setInt(6, candy.getStock());
+            stmt.setInt(7, candy.getCandyID());
 
             stmt.executeUpdate();
 
