@@ -1,0 +1,13 @@
+CREATE TABLE Recipe (
+    CandyID INT NOT NULL,
+    Name NVARCHAR(100) NOT NULL,
+    Niveau INT NOT NULL,
+    Ingredients NVARCHAR(100) NOT NULL,
+    QtyID INT NOT NULL,
+    PRIMARY KEY (CandyID, Ingredients)
+);
+CREATE TABLE Ingredients (
+    ingredientsID INT IDENTITY(1,1) PRIMARY KEY,
+    Iname NVARCHAR(100) NOT NULL,
+    stockID INT
+);
