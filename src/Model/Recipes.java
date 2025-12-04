@@ -68,5 +68,11 @@ public class Recipes {
 		return ingridients.get(ingridient);
 	}
 	
+	public void printIngredients() {
+	    for (var entry : ingridients.entrySet()) {
+	        System.out.println(" - " + entry.getKey() + ": " + entry.getValue());
+	    }
+	}
+	
 
 }
