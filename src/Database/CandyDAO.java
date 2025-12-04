@@ -9,6 +9,8 @@ public interface CandyDAO {
 	
 	List<Candy> getAllCandy() throws DataAccessException;
 	//skal vi have en liste af alle slik samlet eller skal vi have en liste af alle slik i hver kategori?
+	
+	List<Candy> getCandyByType(String type) throws DataAccessException;
 
 	void delete(int id) throws DataAccessException;
 
