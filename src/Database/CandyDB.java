@@ -10,6 +10,7 @@ import Model.Bolcher;
 import Model.Candy;
 import Model.GourmetBolcher;
 import Model.LogoBolcher;
+import Model.Lollipop;
 
 public class CandyDB implements CandyDAO {
 
@@ -192,6 +193,18 @@ public class CandyDB implements CandyDAO {
 
                     case "gourmetbolcher":
                         candy = new GourmetBolcher(
+                            rs.getInt("CandyID"),
+                            rs.getString("Type"),
+                            rs.getInt("Price"),
+                            rs.getInt("Stock"),
+                            rs.getInt("MinStock"),
+                            rs.getInt("MaxStock"),
+                            rs.getDate("Date")
+                        );
+                        break;
+                        
+                    case "lollipop":
+                        candy = new Lollipop(
                             rs.getInt("CandyID"),
                             rs.getString("Type"),
                             rs.getInt("Price"),
