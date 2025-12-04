@@ -38,4 +38,5 @@ public class Candy {
     public void setMaxStock(int maxStock) { this.maxStock = maxStock; }
     public void setDate(Date date) { this.date = date; }
     public void setStock(int stock) { this.stock = stock; }
+    public void setCandyID(int candyID) { this.candyID = candyID; }
 }
