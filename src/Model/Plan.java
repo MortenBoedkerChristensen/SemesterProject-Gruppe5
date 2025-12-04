@@ -7,12 +7,22 @@ public class Plan {
 	
 	private int planID;
 	private Date date;
-	private int status;
+	private Status status;
+	private enum Status {
+		STARTED,
+		COOKING,
+		READY,
+		
+	}
 	private List<Recipes> recipe;
 	
 	public Plan(List<Recipes> recipe) {
 		this.recipe = recipe;
 
+	}
+	
+	public Plan() {
+		
 	}
 	public int setPlanID(int planID) {
 		return this.planID = planID;
@@ -30,16 +40,21 @@ public class Plan {
 		return date;
 	}
 	
-	public int setStatus(int status) {
-		return this.status = status;
+	public void setStatus(Status status) {
+		this.status = Status.STARTED;
 	}
 	
-	public int getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 	
 	public void setRecipe(List<Recipes> recipe) {
 		this.recipe = recipe;
+	}
+	
+	
+	public void addRecipe(Recipes recipe) {
+		this.recipe.add(recipe);
 	}
 	
 	public List<Recipes> getRecipe() {
