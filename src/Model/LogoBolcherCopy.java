@@ -10,7 +10,7 @@ public class LogoBolcherCopy extends LogoBolcher {
 	
 	public LogoBolcherCopy(Candy candy, Recipes recipe) {
 	    super(
-	        recipe.getProductID(),      // id
+	        recipe.getCandyID(),      // id
 	        recipe.getName(),           // type
 	        candy.getPrice(),           // price
 	        candy.getStock(),           // stock — brug evt. candy's stock

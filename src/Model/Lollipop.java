@@ -1,22 +1,22 @@
 package Model;
 
+import java.sql.Date;
+
 public class Lollipop extends Candy {
-	public Lollipop(int id, String type, int price, int stock, int minStock, int maxStock, java.sql.Date date) {
-		super(id, type, price, stock, minStock, maxStock, date);
-		
-	}
-	
-	public Lollipop(Candy candy, Recipes recipe) {
-	    super(
-	        recipe.getProductID(),      // id
-	        recipe.getName(),           // type
-	        candy.getPrice(),           // ← DU KALDER DEN SÅDAN HER
-	        candy.getStock(),           // stock — brug evt. candy's stock
-	        candy.getMinStock(),        // minStock
-	        candy.getMaxStock(),        // maxStock
-	        new java.sql.Date(System.currentTimeMillis())
-	    );
-	}
 
+    public Lollipop(int candyID, String type, int stock, int minStock, int maxStock, int price, Date date) {
+        super(candyID, type, price, minStock, maxStock, date, stock);
+    }
 
+    public Lollipop(Candy candy, Recipes recipe) {
+        super(
+            recipe.getCandyID(),
+            recipe.getType(),
+            candy.getPrice(),
+            candy.getStock(),
+            candy.getMinStock(),
+            new Date(System.currentTimeMillis()),
+            candy.getMaxStock()     
+            );
+    }
 }
