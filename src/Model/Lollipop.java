@@ -8,7 +8,7 @@ public class Lollipop extends Candy {
 	
 	public Lollipop(Candy candy, Recipes recipe) {
 	    super(
-	        recipe.getCandyID(),      // id
+	        recipe.getProductID(),      // id
 	        recipe.getName(),           // type
 	        candy.getPrice(),           // ← DU KALDER DEN SÅDAN HER
 	        candy.getStock(),           // stock — brug evt. candy's stock

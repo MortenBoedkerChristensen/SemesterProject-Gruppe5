@@ -3,27 +3,27 @@ package Model;
 import java.util.HashMap;
 
 public class Recipes {
-	private int candyID;
+	private int productID;
 	private String name;
 	private int difficulty;
 	private HashMap<String, Integer> ingridients;
 	
 	
-	public Recipes(int candyID, String name, int difficulty) {
-		this.candyID = candyID;
+	public Recipes(int productID, String name, int difficulty) {
+		this.productID = productID;
 		this.name = name;
 		this.difficulty = difficulty;
 		ingridients = new HashMap<>();
 	}
 
 
-	public int getCandyID() {
-		return candyID;
+	public int getProductID() {
+		return productID;
 	}
 
 
-	public void setCandyID(int candyID) {
-		this.candyID = candyID;
+	public void setProductID(int productID) {
+		this.productID = productID;
 	}
 
 
