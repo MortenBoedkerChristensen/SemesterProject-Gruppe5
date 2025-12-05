@@ -14,19 +14,11 @@ import Model.Lollipop;
 
 public class CandyDB implements CandyDAO {
 
-    private static CandyDB instance;
     private Connection conn;
 
-    private CandyDB() throws DataAccessException {
-        // Hent connection fra dit DBConnection Singleton
+    
+    public CandyDB() throws DataAccessException {
         conn = DBConnection.getInstance().getConnection();
-    }
-
-    public static synchronized CandyDB getInstance() throws DataAccessException {
-        if (instance == null) {
-            instance = new CandyDB();
-        }
-        return instance;
     }
 
     // INSERT
@@ -34,7 +26,7 @@ public class CandyDB implements CandyDAO {
     public Candy insert(Candy candy) throws DataAccessException {
 
         String sql = "INSERT INTO candy (CandyID, Type, Price, Stock, MinStock, MaxStock, Date) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -59,7 +51,7 @@ public class CandyDB implements CandyDAO {
     public Candy update(Candy candy) throws DataAccessException {
 
         String sql = "UPDATE candy SET Type = ?, Price = ?, Stock = ?, MinStock = ?, MaxStock = ?, Date = ? "
-                   + "WHERE CandyID = ?";
+                + "WHERE CandyID = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -107,13 +99,13 @@ public class CandyDB implements CandyDAO {
 
             if (rs.next()) {
                 return new Candy(
-                    rs.getInt("CandyID"),
-                    rs.getString("Type"),
-                    rs.getInt("Price"),
-                    rs.getInt("MinStock"),
-                    rs.getInt("MaxStock"),
-                    rs.getDate("Date"),
-                    rs.getInt("Stock")
+                        rs.getInt("CandyID"),
+                        rs.getString("Type"),
+                        rs.getInt("Price"),
+                        rs.getInt("MinStock"),
+                        rs.getInt("MaxStock"),
+                        rs.getDate("Date"),
+                        rs.getInt("Stock")
                 );
             }
             return null;
@@ -123,7 +115,7 @@ public class CandyDB implements CandyDAO {
         }
     }
 
-    // GET ALL ??????????
+    // GET ALL
     @Override
     public List<Candy> getAllCandy() throws DataAccessException {
 
@@ -135,13 +127,13 @@ public class CandyDB implements CandyDAO {
 
             while (rs.next()) {
                 Candy candy = new Candy(
-                    rs.getInt("CandyID"),
-                    rs.getString("Type"),
-                    rs.getInt("Price"),
-                    rs.getInt("MinStock"),
-                    rs.getInt("MaxStock"),
-                    rs.getDate("Date"),
-                    rs.getInt("Stock")
+                        rs.getInt("CandyID"),
+                        rs.getString("Type"),
+                        rs.getInt("Price"),
+                        rs.getInt("MinStock"),
+                        rs.getInt("MaxStock"),
+                        rs.getDate("Date"),
+                        rs.getInt("Stock")
                 );
                 list.add(candy);
             }
@@ -165,65 +157,64 @@ public class CandyDB implements CandyDAO {
             while (rs.next()) {
                 Candy candy;
 
-                // Lav en instans af den rigtige subklasse baseret på type
                 switch (type.toLowerCase()) {
                     case "bolcher":
                         candy = new Bolcher(
-                            rs.getInt("CandyID"),
-                            rs.getString("Type"),
-                            rs.getInt("Price"),
-                            rs.getInt("Stock"),
-                            rs.getInt("MinStock"),
-                            rs.getInt("MaxStock"),
-                            rs.getDate("Date")
+                                rs.getInt("CandyID"),
+                                rs.getString("Type"),
+                                rs.getInt("Price"),
+                                rs.getInt("Stock"),
+                                rs.getInt("MinStock"),
+                                rs.getInt("MaxStock"),
+                                rs.getDate("Date")
                         );
                         break;
 
                     case "logobolcher":
                         candy = new LogoBolcher(
-                            rs.getInt("CandyID"),
-                            rs.getString("Type"),
-                            rs.getInt("Price"),
-                            rs.getInt("Stock"),
-                            rs.getInt("MinStock"),
-                            rs.getInt("MaxStock"),
-                            rs.getDate("Date")
+                                rs.getInt("CandyID"),
+                                rs.getString("Type"),
+                                rs.getInt("Price"),
+                                rs.getInt("Stock"),
+                                rs.getInt("MinStock"),
+                                rs.getInt("MaxStock"),
+                                rs.getDate("Date")
                         );
                         break;
 
                     case "gourmetbolcher":
                         candy = new GourmetBolcher(
-                            rs.getInt("CandyID"),
-                            rs.getString("Type"),
-                            rs.getInt("Price"),
-                            rs.getInt("Stock"),
-                            rs.getInt("MinStock"),
-                            rs.getInt("MaxStock"),
-                            rs.getDate("Date")
+                                rs.getInt("CandyID"),
+                                rs.getString("Type"),
+                                rs.getInt("Price"),
+                                rs.getInt("Stock"),
+                                rs.getInt("MinStock"),
+                                rs.getInt("MaxStock"),
+                                rs.getDate("Date")
                         );
                         break;
-                        
+
                     case "lollipop":
                         candy = new Lollipop(
-                            rs.getInt("CandyID"),
-                            rs.getString("Type"),
-                            rs.getInt("Price"),
-                            rs.getInt("Stock"),
-                            rs.getInt("MinStock"),
-                            rs.getInt("MaxStock"),
-                            rs.getDate("Date")
+                                rs.getInt("CandyID"),
+                                rs.getString("Type"),
+                                rs.getInt("Price"),
+                                rs.getInt("Stock"),
+                                rs.getInt("MinStock"),
+                                rs.getInt("MaxStock"),
+                                rs.getDate("Date")
                         );
                         break;
 
                     default:
                         candy = new Candy(
-                            rs.getInt("CandyID"),
-                            rs.getString("Type"),
-                            rs.getInt("Price"),
-                            rs.getInt("MinStock"),
-                            rs.getInt("MaxStock"),
-                            rs.getDate("Date"),
-                            rs.getInt("Stock")
+                                rs.getInt("CandyID"),
+                                rs.getString("Type"),
+                                rs.getInt("Price"),
+                                rs.getInt("MinStock"),
+                                rs.getInt("MaxStock"),
+                                rs.getDate("Date"),
+                                rs.getInt("Stock")
                         );
                         break;
                 }
