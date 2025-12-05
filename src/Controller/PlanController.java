@@ -5,6 +5,7 @@ package Controller;
 import java.util.List;
 
 import Connection.DataAccessException;
+import Database.CandyDB;
 import Database.RecipeDB;
 import Model.Candy;
 import Model.Plan;

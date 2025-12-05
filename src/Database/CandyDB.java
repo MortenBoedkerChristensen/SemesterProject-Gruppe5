@@ -17,8 +17,12 @@ public class CandyDB implements CandyDAO {
     private Connection conn;
 
     
-    public CandyDB() throws DataAccessException {
+    public CandyDB() {
+    	try {
         conn = DBConnection.getInstance().getConnection();
+    	} catch (DataAccessException e) {
+    		System.out.println("Could not connect");
+    	}
     }
 
     // INSERT
