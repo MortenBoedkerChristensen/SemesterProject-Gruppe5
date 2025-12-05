@@ -13,8 +13,12 @@ public class RecipeDB {
 
     private Connection conn;
 
-    public RecipeDB() throws DataAccessException {
-        conn = DBConnection.getInstance().getConnection();
+    public RecipeDB(){
+    	try {
+    		conn = DBConnection.getInstance().getConnection();
+    	} catch (DataAccessException e) {
+    		System.out.println("Could not connect");
+    	}
     }
 
     public Recipes getRecipeByCandyId(int candyId) throws DataAccessException {
