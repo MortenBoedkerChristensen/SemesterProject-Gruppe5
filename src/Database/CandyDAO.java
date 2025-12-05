@@ -10,6 +10,8 @@ public interface CandyDAO {
 	List<Candy> getAllCandy() throws DataAccessException;
 	
 	List<Candy> getCandyByType(String type) throws DataAccessException;
+	
+	List<Candy> getLowStockCandy() throws DataAccessException;
 
 	void delete(int id) throws DataAccessException;
 

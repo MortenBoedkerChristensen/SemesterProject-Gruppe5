@@ -57,9 +57,9 @@ public class CandyController {
     }
 
     public List<Candy> getAllLowStockCandy() throws DataAccessException {
-        List<Candy> lowStockList = new ArrayList<>();
+        List<Candy> lowStockList = candydb.getLowStockCandy();
 
-        // Henter alle candy fra databasen
+      /*  // Henter alle candy fra databasen
         List<Candy> allCandy = candydb.getAllCandy();
 
         // Finder candy hvor stock < minStock
@@ -67,7 +67,7 @@ public class CandyController {
             if (c.getStock() < c.getMinStock()) {
                 lowStockList.add(c);
             }
-        }
+        } */
 
         return lowStockList;
     }
