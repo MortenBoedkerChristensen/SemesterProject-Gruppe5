@@ -6,7 +6,11 @@ import java.util.List;
 
 import Connection.DBConnection;
 import Connection.DataAccessException;
+import Model.Bolcher;
 import Model.Candy;
+import Model.GourmetBolcher;
+import Model.LogoBolcher;
+import Model.Lollipop;
 
 public class CandyDB implements CandyDAO {
 
@@ -144,6 +148,91 @@ public class CandyDB implements CandyDAO {
 
         } catch (SQLException e) {
             throw new DataAccessException("Failed to fetch all candy", e);
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Candy> getCandyByType(String type) throws DataAccessException {
+        List<Candy> list = new ArrayList<>();
+        String sql = "SELECT * FROM candy WHERE Type = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, type);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Candy candy;
+
+                // Lav en instans af den rigtige subklasse baseret på type
+                switch (type.toLowerCase()) {
+                    case "bolcher":
+                        candy = new Bolcher(
+                            rs.getInt("CandyID"),
+                            rs.getString("Type"),
+                            rs.getInt("Price"),
+                            rs.getInt("Stock"),
+                            rs.getInt("MinStock"),
+                            rs.getInt("MaxStock"),
+                            rs.getDate("Date")
+                        );
+                        break;
+
+                    case "logobolcher":
+                        candy = new LogoBolcher(
+                            rs.getInt("CandyID"),
+                            rs.getString("Type"),
+                            rs.getInt("Price"),
+                            rs.getInt("Stock"),
+                            rs.getInt("MinStock"),
+                            rs.getInt("MaxStock"),
+                            rs.getDate("Date")
+                        );
+                        break;
+
+                    case "gourmetbolcher":
+                        candy = new GourmetBolcher(
+                            rs.getInt("CandyID"),
+                            rs.getString("Type"),
+                            rs.getInt("Price"),
+                            rs.getInt("Stock"),
+                            rs.getInt("MinStock"),
+                            rs.getInt("MaxStock"),
+                            rs.getDate("Date")
+                        );
+                        break;
+                        
+                    case "lollipop":
+                        candy = new Lollipop(
+                            rs.getInt("CandyID"),
+                            rs.getString("Type"),
+                            rs.getInt("Price"),
+                            rs.getInt("Stock"),
+                            rs.getInt("MinStock"),
+                            rs.getInt("MaxStock"),
+                            rs.getDate("Date")
+                        );
+                        break;
+
+                    default:
+                        candy = new Candy(
+                            rs.getInt("CandyID"),
+                            rs.getString("Type"),
+                            rs.getInt("Price"),
+                            rs.getInt("MinStock"),
+                            rs.getInt("MaxStock"),
+                            rs.getDate("Date"),
+                            rs.getInt("Stock")
+                        );
+                        break;
+                }
+
+                list.add(candy);
+            }
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch candy by type", e);
         }
 
         return list;
