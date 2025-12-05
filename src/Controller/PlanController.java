@@ -23,7 +23,8 @@ public class PlanController {
 		
 		RecipeDB rDB = new RecipeDB();
 		
-		List<Candy> lowStockCandy = cDB.getLowStockCandy();
+		
+		List<Candy> lowStockCandy = cDB.getAllLowStockCandy();
 		List<Recipes> recipes = new List<>();
 		for(Candy c : lowStockCandy) {
 			recipes.add(rDB.getRecipeByCandyId(c.getCandyID()));

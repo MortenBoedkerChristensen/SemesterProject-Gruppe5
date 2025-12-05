@@ -69,10 +69,22 @@ public class Recipes {
 	}
 	
 	public void printIngredients() {
-	    for (var entry : ingridients.entrySet()) {
-	        System.out.println(" - " + entry.getKey() + ": " + entry.getValue());
+	    for (String ingredient : ingridients.keySet()) {
+	        int qty = ingridients.get(ingredient);
+	        System.out.println(ingredient + " " + qty);
 	    }
 	}
-	
-
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("CandyID: ").append(candyID).append("\n");
+		sb.append("Name: ").append(name).append("\n");
+		sb.append("Difficulty: ").append(difficulty).append("\n");
+		sb.append("Ingredients:\n");
+		for (String ingredient : ingridients.keySet()) {
+	        int qty = ingridients.get(ingredient);
+	        sb.append(ingredient).append(" ").append(qty).append("\n");
+	    }
+	return sb.toString();
+	}
 }
+	
