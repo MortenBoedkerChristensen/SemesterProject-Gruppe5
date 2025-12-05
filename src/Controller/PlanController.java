@@ -1,5 +1,7 @@
 package Controller;
 
+import com.sun.tools.javac.util.List;
+
 import Model.Plan;
 import Model.Recipes;
 
@@ -18,6 +20,14 @@ public class PlanController {
 		tempPlan.addRecipe(recipe);
 	}
 	
+	public void savePlan() {
+		//planDB save plan
+	}
+	
+	public List<Recipes> getLowStockRecipes() {
+		List<Recipes> recipes = new List<>();
+		return recipes;
+	}
 	
 	
 	
