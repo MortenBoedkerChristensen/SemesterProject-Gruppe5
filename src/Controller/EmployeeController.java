@@ -1,14 +1,11 @@
 package Controller;
 
-<<<<<<< HEAD
 import Database.EmployeeDAO;
 import Database.EmployeeDB;
 import Connection.DataAccessException;
 import Model.Employee;
-=======
 import Model.Candy;
 import Database.*;
->>>>>>> 6f7912fe8e1186be8282b1d4f63f6904de98feb5
 
 public class EmployeeController {
 	CandyDAO CandyDB;
