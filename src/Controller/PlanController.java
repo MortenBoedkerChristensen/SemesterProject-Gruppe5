@@ -27,6 +27,12 @@ public class PlanController {
 		for(Candy c : lowStockCandy) {
 			recipes.add(rDB.getRecipeByCandyId(c.getCandyID()));
 		}
+		
+		Plan p = assemblePlan(recipes);
+		
+		//confirm Plan
+		
+		savePlan(p);
 			
 			
 			
@@ -48,12 +54,13 @@ public class PlanController {
 		 */
 	}
 	
-	public void addRecipeToPlan(Recipes recipe) {
+	/* public void addRecipeToPlan(Recipes recipe) {
 		tempPlan.addRecipe(recipe);
-	}
+	} */
 	
-	public void savePlan() {
+	public void savePlan(Plan p) {
 		//planDB save plan
+		//PlanDB.savePlan(p);
 	}
 	
 	public Plan assemblePlan(List<Recipes> recipes) {

@@ -10,6 +10,8 @@ public class CandyController {
 	
 	public List<Candy> getAllLowStockCandy() {
 		
+		return null; //return cd.getLowStockCandy();
+		
 	}
 
 }
