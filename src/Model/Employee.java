@@ -34,4 +34,7 @@ public class Employee {
 	public String getNiveau() {
 		return niveau;
 	}
+	public String setNiveau(String niveau) {
+		return this.niveau = niveau;
+	}
 }
