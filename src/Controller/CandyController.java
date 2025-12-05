@@ -1,7 +1,7 @@
 package Controller;
 
 public class CandyController {
-	
+	CandyDB cd = new CandyDB();
 	
 	public CandyController() {
 		
