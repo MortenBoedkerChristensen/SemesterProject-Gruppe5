@@ -17,8 +17,12 @@ public class CandyDB implements CandyDAO {
     private Connection conn;
 
     
-    public CandyDB() throws DataAccessException {
+    public CandyDB() {
+    	try {
         conn = DBConnection.getInstance().getConnection();
+    	} catch (DataAccessException e) {
+    		System.out.println("Could not connect");
+    	}
     }
 
     // INSERT
@@ -228,4 +232,30 @@ public class CandyDB implements CandyDAO {
 
         return list;
     }
+
+	@Override
+	public List<Candy> getLowStockCandy() throws DataAccessException {
+		List<Candy> list = new ArrayList<>();
+        String sql = "SELECT * FROM candy WHERE Type Stock < MinStock";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Candy candy = new Candy(
+                        rs.getInt("CandyID"),
+                        rs.getString("Type"),
+                        rs.getInt("Price"),
+                        rs.getInt("MinStock"),
+                        rs.getInt("MaxStock"),
+                        rs.getDate("Date"),
+                        rs.getInt("Stock")
+                );
+                list.add(candy);
+            }
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch all candy", e);
+        }
+        
+        return list;
+	}
 }
