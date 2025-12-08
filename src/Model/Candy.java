@@ -12,7 +12,7 @@ public class Candy {
     private Date date;
     private int stock;
 
-    public Candy(int candyID, String type, int price, int minStock, int maxStock, Date date, int stock) {
+    public Candy(int candyID, String type, int price, int minStock, int maxStock, Date date, int stock, String name) {
 		this.stock = stock;
 		this.candyID = candyID;
         this.type = type;
@@ -30,6 +30,7 @@ public class Candy {
     public int getMinStock() { return minStock; }
     public int getMaxStock() { return maxStock; }
     public Date getDate() { return date; }
+    public String getName() { return type; }
 
     // Setters
     public void setType(String type) { this.type = type; }
@@ -39,4 +40,5 @@ public class Candy {
     public void setDate(Date date) { this.date = date; }
     public void setStock(int stock) { this.stock = stock; }
     public void setCandyID(int candyID) { this.candyID = candyID; }
+    public void setName(String name) { this.type = name; }
 }
