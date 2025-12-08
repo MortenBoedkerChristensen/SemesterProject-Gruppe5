@@ -21,8 +21,6 @@ public class EmployeeController {
         }
     }
     
-
-
     public Employee getEmployee(int id) {
         try {
             return employeeDAO.findById(id);

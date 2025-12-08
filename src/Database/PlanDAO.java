@@ -1,20 +1,18 @@
 package Database;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import Connection.DataAccessException;
 import Model.Plan;
 
 public interface PlanDAO {
-	
-	List<Plan> getPlans() throws DataAccessException;
-
-	void delete(int id) throws DataAccessException;
 
 	Plan create(Plan plan) throws DataAccessException;
 
 	Plan findById(int id) throws DataAccessException;
-
-	Plan insert(Plan plan) throws DataAccessException;
+	
+	Plan buildPlan(ResultSet rs) throws SQLException;
 
 }

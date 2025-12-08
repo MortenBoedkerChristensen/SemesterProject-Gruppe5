@@ -106,4 +106,37 @@ CREATE TABLE Employee (
     ProductionID INT
     -- ProductionID references Production table, but that table is excluded per your request.
 );
+CREATE TABLE [Plan] (
+    PlanID INT IDENTITY(1,1) PRIMARY KEY,  -- Auto-increment primary key
+    Date DATE NOT NULL,
+    Status VARCHAR(50) NOT NULL,
+    LocationID INT NOT NULL,
+    CandyID INT NOT NULL,
+    CONSTRAINT FK_Plan_Location FOREIGN KEY (LocationID) REFERENCES Location(LocationID),
+    CONSTRAINT FK_Plan_Candy FOREIGN KEY (CandyID) REFERENCES Candy(CandyID)
+);
+INSERT INTO Candy (name, type, price, minStock, maxStock, stock, [date])
+VALUES 
+('Jordbærbolche', 'Bolcher', 25, 10, 100, 5, GETDATE()),
+('HindbærBolche', 'Bolcher', 25, 10, 100, 8, GETDATE()),
+('Lakridsbolche', 'Bolcher', 30, 10, 100, 7, GETDATE()),
+('Citronbolche', 'Bolcher', 20, 10, 100, 6, GETDATE());
 
+-- ==============================
+-- 4. Insert recipes for each candy
+-- ==============================
+INSERT INTO Recipe (CandyID, Name, Niveau, Ingredients, QtyID)
+VALUES 
+(1, 'Jordbærbolche Recipe', 1, 'Sugar', 10),
+(2, 'HindbærBolche Recipe', 1, 'Sugar', 8),
+(3, 'Lakridsbolche Recipe', 2, 'Sugar', 12),
+(4, 'Citronbolche Recipe', 1, 'Sugar', 6);
+
+-- ==============================
+-- 5. Insert employees
+-- ==============================
+INSERT INTO Employee (name, niveau)
+VALUES 
+('Alice', 1),
+('Bob', 2),
+('Charlie', 3);

@@ -49,4 +49,9 @@ public class Candy {
 				+ type + ", price=" + price + ", minStock=" + minStock + ", maxStock=" + maxStock + ", date=" + date
 				+ ", stock=" + stock + ", name=" + name + "]";
 }
+
+	public int getRequiredNiveau() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

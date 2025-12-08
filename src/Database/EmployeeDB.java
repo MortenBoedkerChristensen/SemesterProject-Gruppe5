@@ -41,5 +41,25 @@
 	
 	        return employee;
 	    }
+	    public List<Employee> getAllEmployees() throws DataAccessException {
+	        List<Employee> employees = new ArrayList<>();
+	        String sql = "SELECT employeeId, name, niveau FROM Employee";
+
+	        try (PreparedStatement stmt = dbConn.getConnection().prepareStatement(sql)) {
+	            ResultSet rs = stmt.executeQuery();
+	            while (rs.next()) {
+	                int empId = rs.getInt("employeeId");
+	                String name = rs.getString("name");
+	                int niveau = rs.getInt("niveau");
+
+	                employees.add(new Employee(empId, name, niveau));
+	            }
+	        } catch (SQLException e) {
+	            throw new DataAccessException("Failed to retrieve employees", e);
+	        }
+
+	        return employees; // never returns null
+	    }
+
 	    
 	}
