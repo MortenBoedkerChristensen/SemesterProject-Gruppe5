@@ -18,14 +18,14 @@ public class PlanController {
 		
 	}
 	
-	public void newPlan()  {
+	public void newPlan() throws DataAccessException  {
 		CandyDB cDB = new CandyDB();
 		
 		RecipeDB rDB = new RecipeDB();
 		
 		
 		List<Candy> lowStockCandy = cDB.getLowStockCandy();
-		List<Recipes> recipes = new List<>();
+		List<Recipes> recipes = new java.util.ArrayList<>();
 		for(Candy c : lowStockCandy) {
 			recipes.add(rDB.getRecipeByCandyId(c.getCandyID()));
 		}
