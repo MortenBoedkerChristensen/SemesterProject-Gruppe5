@@ -11,7 +11,7 @@ public interface PlanDAO {
 
 	void delete(int id) throws DataAccessException;
 
-	Plan update(Plan plan) throws DataAccessException;
+	Plan create(Plan plan) throws DataAccessException;
 
 	Plan findById(int id) throws DataAccessException;
 

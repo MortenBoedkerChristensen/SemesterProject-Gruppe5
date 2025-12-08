@@ -1,6 +1,5 @@
 package Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Connection.DataAccessException;
@@ -20,6 +19,7 @@ public class CandyController {
     
     public Candy addCandy(
             String type, 
+            String name,
             int price, 
             int stock, 
             int minStock, 
@@ -32,24 +32,24 @@ public class CandyController {
         switch (type.toLowerCase()) {
 
             case "bolcher":
-                candy = new Bolcher(0, type, price, stock, minStock, maxStock, date);
+                candy = new Bolcher(0, type, price, stock, minStock, maxStock, date, name);
                 break;
 
             case "logobolcher":
-                candy = new LogoBolcher(0, type, price, stock, minStock, maxStock, date);
+                candy = new LogoBolcher(0, type, price, stock, minStock, maxStock, date, name);
                 break;
 
             case "gourmetbolcher":
-                candy = new GourmetBolcher(0, type, price, stock, minStock, maxStock, date);
+                candy = new GourmetBolcher(0, type, price, stock, minStock, maxStock, date, name);
                 break;
 
             case "lollipop":
-                candy = new Lollipop(0, type, price, stock, minStock, maxStock, date);
+                candy = new Lollipop(0, type, price, stock, minStock, maxStock, date, name);
                 break;
 
             default:
                 // fallback
-                candy = new Candy(0, type, price, minStock, maxStock, date, stock);
+                candy = new Candy(0, type, price, minStock, maxStock, date, stock, name);
                 break;
         }
 

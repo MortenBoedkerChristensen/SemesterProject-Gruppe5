@@ -16,24 +16,21 @@ public class CandyDB implements CandyDAO {
 
     private Connection conn;
 
-    
     public CandyDB() {
-    	try {
-        conn = DBConnection.getInstance().getConnection();
-    	} catch (DataAccessException e) {
-    		System.out.println("Could not connect");
-    	}
+        try {
+            conn = DBConnection.getInstance().getConnection();
+        } catch (DataAccessException e) {
+            System.out.println("Could not connect");
+        }
     }
 
     // INSERT
     @Override
     public Candy insert(Candy candy) throws DataAccessException {
-
-        String sql = "INSERT INTO candy (CandyID, Type, Price, Stock, MinStock, MaxStock, Date) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO candy (CandyID, Type, Price, Stock, MinStock, MaxStock, Date, Name) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, candy.getCandyID());
             stmt.setString(2, candy.getType());
             stmt.setInt(3, candy.getPrice());
@@ -41,6 +38,7 @@ public class CandyDB implements CandyDAO {
             stmt.setInt(5, candy.getMinStock());
             stmt.setInt(6, candy.getMaxStock());
             stmt.setDate(7, candy.getDate());
+            stmt.setString(8, candy.getName());
 
             stmt.executeUpdate();
             return candy;
@@ -53,19 +51,18 @@ public class CandyDB implements CandyDAO {
     // UPDATE
     @Override
     public Candy update(Candy candy) throws DataAccessException {
-
-        String sql = "UPDATE candy SET Type = ?, Price = ?, Stock = ?, MinStock = ?, MaxStock = ?, Date = ? "
-                + "WHERE CandyID = ?";
+        String sql = "UPDATE candy SET Type = ?, Price = ?, Stock = ?, MinStock = ?, MaxStock = ?, Date = ?, Name = ? "
+                   + "WHERE CandyID = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, candy.getType());
             stmt.setInt(2, candy.getPrice());
             stmt.setInt(3, candy.getStock());
             stmt.setInt(4, candy.getMinStock());
             stmt.setInt(5, candy.getMaxStock());
             stmt.setDate(6, candy.getDate());
-            stmt.setInt(7, candy.getCandyID());
+            stmt.setString(7, candy.getName());
+            stmt.setInt(8, candy.getCandyID());
 
             stmt.executeUpdate();
             return candy;
@@ -78,13 +75,10 @@ public class CandyDB implements CandyDAO {
     // DELETE
     @Override
     public void delete(int id) throws DataAccessException {
-
         String sql = "DELETE FROM candy WHERE CandyID = ?";
-
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
-
         } catch (SQLException e) {
             throw new DataAccessException("Failed to delete candy", e);
         }
@@ -93,11 +87,9 @@ public class CandyDB implements CandyDAO {
     // FIND BY ID
     @Override
     public Candy findById(int id) throws DataAccessException {
-
         String sql = "SELECT * FROM candy WHERE CandyID = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
@@ -109,7 +101,8 @@ public class CandyDB implements CandyDAO {
                         rs.getInt("MinStock"),
                         rs.getInt("MaxStock"),
                         rs.getDate("Date"),
-                        rs.getInt("Stock")
+                        rs.getInt("Stock"),
+                        rs.getString("Name")
                 );
             }
             return null;
@@ -122,7 +115,6 @@ public class CandyDB implements CandyDAO {
     // GET ALL
     @Override
     public List<Candy> getAllCandy() throws DataAccessException {
-
         List<Candy> list = new ArrayList<>();
         String sql = "SELECT * FROM candy";
 
@@ -137,7 +129,8 @@ public class CandyDB implements CandyDAO {
                         rs.getInt("MinStock"),
                         rs.getInt("MaxStock"),
                         rs.getDate("Date"),
-                        rs.getInt("Stock")
+                        rs.getInt("Stock"),
+                        rs.getString("Name")
                 );
                 list.add(candy);
             }
@@ -170,7 +163,8 @@ public class CandyDB implements CandyDAO {
                                 rs.getInt("Stock"),
                                 rs.getInt("MinStock"),
                                 rs.getInt("MaxStock"),
-                                rs.getDate("Date")
+                                rs.getDate("Date"),
+                                rs.getString("Name")
                         );
                         break;
 
@@ -182,7 +176,8 @@ public class CandyDB implements CandyDAO {
                                 rs.getInt("Stock"),
                                 rs.getInt("MinStock"),
                                 rs.getInt("MaxStock"),
-                                rs.getDate("Date")
+                                rs.getDate("Date"),
+                                rs.getString("Name")
                         );
                         break;
 
@@ -194,7 +189,8 @@ public class CandyDB implements CandyDAO {
                                 rs.getInt("Stock"),
                                 rs.getInt("MinStock"),
                                 rs.getInt("MaxStock"),
-                                rs.getDate("Date")
+                                rs.getDate("Date"),
+                                rs.getString("Name")
                         );
                         break;
 
@@ -206,7 +202,8 @@ public class CandyDB implements CandyDAO {
                                 rs.getInt("Stock"),
                                 rs.getInt("MinStock"),
                                 rs.getInt("MaxStock"),
-                                rs.getDate("Date")
+                                rs.getDate("Date"),
+                                rs.getString("Name")
                         );
                         break;
 
@@ -218,7 +215,8 @@ public class CandyDB implements CandyDAO {
                                 rs.getInt("MinStock"),
                                 rs.getInt("MaxStock"),
                                 rs.getDate("Date"),
-                                rs.getInt("Stock")
+                                rs.getInt("Stock"),
+                                rs.getString("Name")
                         );
                         break;
                 }
@@ -233,10 +231,11 @@ public class CandyDB implements CandyDAO {
         return list;
     }
 
-	@Override
-	public List<Candy> getLowStockCandy() throws DataAccessException {
-		List<Candy> list = new ArrayList<>();
-        String sql = "SELECT * FROM candy WHERE Type Stock < MinStock";
+    @Override
+    public List<Candy> getLowStockCandy() throws DataAccessException {
+        List<Candy> list = new ArrayList<>();
+        String sql = "SELECT * FROM candy WHERE Stock < MinStock";
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -247,15 +246,16 @@ public class CandyDB implements CandyDAO {
                         rs.getInt("MinStock"),
                         rs.getInt("MaxStock"),
                         rs.getDate("Date"),
-                        rs.getInt("Stock")
+                        rs.getInt("Stock"),
+                        rs.getString("Name")
                 );
                 list.add(candy);
             }
 
         } catch (SQLException e) {
-            throw new DataAccessException("Failed to fetch all candy", e);
+            throw new DataAccessException("Failed to fetch low stock candy", e);
         }
-        
+
         return list;
-	}
+    }
 }
