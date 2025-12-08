@@ -3,9 +3,9 @@ package Model;
 public class Employee {
 	private int employeeId;
 	private String name;
-	private String niveau;
+	private int niveau;
 	
-	public Employee(int employeeId, String name, String niveau) {
+	public Employee(int employeeId, String name, int niveau) {
 		this.employeeId = employeeId;
 		this.name = name;
 		this.niveau = niveau;
@@ -27,14 +27,14 @@ public class Employee {
 		return name;
 	}
 	
-	public void niveau(String niveau) {
+	public void niveau(int niveau) {
 		this.niveau = niveau;
 	}
 	
-	public String getNiveau() {
+	public int getNiveau() {
 		return niveau;
 	}
-	public String setNiveau(String niveau) {
+	public int setNiveau(int niveau) {
 		return this.niveau = niveau;
 	}
 }

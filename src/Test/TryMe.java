@@ -1,9 +1,11 @@
 package Test;
 
 import Database.CandyDB;
-import Database.RecipeDB;  // hvis du vil teste recipes også
+import Database.RecipeDB;
+import Database.EmployeeDB;  // Tilføjet EmployeeDB
 import Model.Candy;
 import Model.Recipes;
+import Model.Employee;       // Tilføjet Employee
 import Connection.DataAccessException;
 
 import java.util.List;
@@ -13,6 +15,7 @@ public class TryMe {
     public static void main(String[] args) {
         TryMe tester = new TryMe();
         tester.runSimpleTests();
+        tester.runEmployeeTest(); // Ny test for EmployeeDB
         // tester.loadAndPrintRecipe(1); // kan kaldes hvis du vil teste recipes
     }
 
@@ -43,6 +46,36 @@ public class TryMe {
             }
 
             System.out.println("\n=== SIMPLE TRYME END ===");
+
+        } catch (DataAccessException e) {
+            System.out.println("Database error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Ny funktion til EmployeeDB test
+    public void runEmployeeTest() {
+        try {
+            EmployeeDB db = new EmployeeDB();
+
+            System.out.println("\n=== EMPLOYEEDB FIND BY ID TEST ===");
+
+            int testId = 1; // Ændr til et eksisterende ID i din Employee-tabel
+            Employee emp = db.findById(testId);
+
+            if (emp != null) {
+                System.out.println("Employee found:");
+                System.out.println("ID: " + emp.getEmployeeId());
+                System.out.println("Name: " + emp.getName());
+                System.out.println("Niveau: " + emp.getNiveau());
+            } else {
+                System.out.println("No employee found with ID = " + testId);
+            }
+
+            System.out.println("=== EMPLOYEEDB TEST END ===");
 
         } catch (DataAccessException e) {
             System.out.println("Database error: " + e.getMessage());
