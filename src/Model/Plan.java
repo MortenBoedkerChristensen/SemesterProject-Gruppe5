@@ -8,7 +8,7 @@ public class Plan {
 	private int planID;
 	private Date date;
 	private Status status;
-	private enum Status {
+	private enum Status { //Flere status + skift i mellem
 		STARTED,
 		COOKING,
 		READY,
