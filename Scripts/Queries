@@ -1,3 +1,6 @@
+-- ===============================
+-- RECIPE
+-- ===============================
 CREATE TABLE Recipe (
     CandyID INT NOT NULL,
     Name NVARCHAR(100) NOT NULL,
@@ -6,8 +9,101 @@ CREATE TABLE Recipe (
     QtyID INT NOT NULL,
     PRIMARY KEY (CandyID, Ingredients)
 );
+-- ===============================
+-- INGREDIENTS
+-- ===============================
 CREATE TABLE Ingredients (
     ingredientsID INT IDENTITY(1,1) PRIMARY KEY,
     Iname NVARCHAR(100) NOT NULL,
     stockID INT
 );
+-- ===============================
+-- LOCATION
+-- ===============================
+CREATE TABLE Location (
+    LocationID INT PRIMARY KEY,
+    ZIP VARCHAR(10),
+    Address VARCHAR(255),
+    StockID INT,
+    FOREIGN KEY (StockID) REFERENCES Stock(StockID)
+);
+
+-- ===============================
+-- STOCK
+-- ===============================
+CREATE TABLE Stock (
+    StockID INT PRIMARY KEY,
+    Maengde INT,
+    SlikID INT
+);
+
+-- ===============================
+-- QTY
+-- ===============================
+CREATE TABLE Qty (
+    QtyID INT PRIMARY KEY,
+    Maengde INT,
+    IngredientsID INT,
+    FOREIGN KEY (IngredientsID) REFERENCES Ingredients(IngredientsID)
+);
+
+-- ===============================
+-- CANDY
+-- ===============================
+CREATE TABLE Candy (
+    CandyID INT PRIMARY KEY,
+    Type VARCHAR(100),
+    MinStock INT,
+    MaxStock INT,
+    Price DECIMAL(10,2),
+    Date DATE,
+    Stock INT
+);
+
+-- ===============================
+-- BOLCHE
+-- ===============================
+CREATE TABLE Bolche (
+    SlikID INT PRIMARY KEY,
+    Niveau VARCHAR(50),
+    FOREIGN KEY (SlikID) REFERENCES Candy(CandyID)
+);
+
+-- ===============================
+-- SLIKKEPINDE
+-- ===============================
+CREATE TABLE Slikkepinde (
+    SlikID INT PRIMARY KEY,
+    Niveau VARCHAR(50),
+    FOREIGN KEY (SlikID) REFERENCES Candy(CandyID)
+);
+
+-- ===============================
+-- LOGOBOLCHER
+-- ===============================
+CREATE TABLE Logobolcher (
+    SlikID INT PRIMARY KEY,
+    Niveau VARCHAR(50),
+    FOREIGN KEY (SlikID) REFERENCES Candy(CandyID)
+);
+
+-- ===============================
+-- GOURMETBOLCHER
+-- ===============================
+CREATE TABLE Gourmetbolcher (
+    SlikID INT PRIMARY KEY,
+    Niveau VARCHAR(50),
+    FOREIGN KEY (SlikID) REFERENCES Candy(CandyID)
+);
+
+-- ===============================
+-- EMPLOYEE
+-- ===============================
+CREATE TABLE Employee (
+    EmployeeID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Niveau VARCHAR(50),
+    ProductionID INT
+    -- ProductionID references Production table, but that table is excluded per your request.
+);
+
