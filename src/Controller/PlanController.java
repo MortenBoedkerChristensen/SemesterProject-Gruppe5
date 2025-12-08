@@ -18,7 +18,7 @@ public class PlanController {
 		
 	}
 	
-	public void newPlan()  {
+	public void createNewPlanWithLowStockCandy()  {
 		CandyDB cDB = new CandyDB();
 		
 		RecipeDB rDB = new RecipeDB();
@@ -31,6 +31,9 @@ public class PlanController {
 		}
 		
 		Plan p = assemblePlan(recipes);
+		
+		
+		//display plan
 		
 		//confirm Plan
 		
