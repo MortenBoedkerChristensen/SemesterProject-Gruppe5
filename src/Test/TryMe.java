@@ -63,7 +63,7 @@ public class TryMe {
         try {
             PlanController controller = new PlanController();
             // Laver en plan for 4 produktioner
-            controller.createPlannedProduction(4);
+           // controller.createPlannedProduction(4);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }

@@ -10,9 +10,8 @@ public class PlanController {
     public PlanController() throws DataAccessException {
         planDB = new PlanDB();
     }
-
-    // Just delegate to PlanDB
-    public void createPlannedProduction(int maxCandies) throws DataAccessException {
-        planDB.createPlannedProduction(maxCandies);
-    }
+    
+    public void createPlannedProductionForEmployee(String employeeName, int maxCandies) throws DataAccessException {
+		planDB.createPlannedProductionForEmployee(employeeName, maxCandies);
+	}
 }

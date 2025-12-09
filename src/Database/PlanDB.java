@@ -58,9 +58,10 @@ public class PlanDB implements PlanDAO {
         String sql = "INSERT INTO [Plan] (date, status, locationID, candyID) VALUES (?, ?, ?, ?)";
 
         Connection conn = null;
+        
         try {
             conn = dbConn.getConnection();
-            conn.setAutoCommit(false); // Starter transaction
+            dbConn.startTransaction(); // Starter transaction
 
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 for (Plan plan : plans) {
@@ -73,25 +74,18 @@ public class PlanDB implements PlanDAO {
                 stmt.executeBatch();
             }
 
-            conn.commit(); // Commit transaction
+            dbConn.commitTransaction(); // Commit transaction
 
         } catch (SQLException e) {
             if (conn != null) {
-                try {
-                    conn.rollback(); 
-                } catch (SQLException ex) {
-                    throw new DataAccessException("Rollback failed", ex);
-                }
+                dbConn.rollbackTransaction(); // Rollback transaction
             }
             throw new DataAccessException("Failed to insert plans", e);
         } finally {
-            if (conn != null) {
-                try {
-                    conn.setAutoCommit(true); // Reset autocommit
-                } catch (SQLException ex) {
-                    throw new DataAccessException("Failed to reset auto-commit", ex);
-                }
-            }
+			// Ensure auto-commit is re-enabled
+			if (conn != null) {
+				dbConn.commitTransaction();
+			}   
         }
     }
 
@@ -114,81 +108,6 @@ public class PlanDB implements PlanDAO {
 
         return plan;
     }
-    
-    public String createPlannedProduction(int maxCandies) throws DataAccessException {
-
-        StringBuilder output = new StringBuilder();
-
-        // Step 1: Get low-stock candies
-        List<Candy> lowStock = candyDB.getLowStockCandy();
-        if (lowStock.size() == 0) {
-            output.append("No candies need production.\n");
-            return output.toString();
-        }
-
-        List<Candy> candiesToPlan;
-        if (lowStock.size() > maxCandies) {
-            candiesToPlan = lowStock.subList(0, maxCandies);
-        } else {
-            candiesToPlan = lowStock;
-        }
-
-        // Step 2: Get all employees
-        List<Employee> allEmployees = employeeDB.getAllEmployees();
-
-        // Step 3: Create plans
-        List<Plan> plansToInsert = new ArrayList<Plan>();
-
-        for (int i = 0; i < candiesToPlan.size(); i++) {
-            Candy candy = candiesToPlan.get(i);
-
-            Recipes recipe = recipeDB.getRecipeByCandyId(candy.getCandyID());
-            if (recipe == null) {
-                output.append("No recipe found for candy: ").append(candy.getName()).append("\n");
-                continue;
-            }
-
-            // Find eligible employees
-            Employee assigned = null;
-            for (int j = 0; j < allEmployees.size(); j++) {
-                Employee e = allEmployees.get(j);
-                if (e.getNiveau() >= recipe.getDifficulty()) {
-                    assigned = e;
-                    break;
-                }
-            }
-
-            if (assigned == null) {
-                output.append("No eligible employees for candy: ").append(candy.getName()).append("\n");
-                continue;
-            }
-
-            // Create plan
-            Plan plan = new Plan();
-            plan.setCandyID(candy.getCandyID());
-            plan.setLocationID(assigned.getEmployeeId());
-            plan.setDate(new java.sql.Date(System.currentTimeMillis()));
-            plan.setRecipe(recipe);
-
-            plansToInsert.add(plan);
-
-            // Append info using recipe.toString()
-            output.append("Candy: ").append(candy.getName())
-                  .append(", Employee: ").append(assigned.getName()).append("\n");
-            output.append(recipe.toString());
-            output.append("---------------------------\n");
-        }
-
-        // Step 4: Insert plans
-        if (plansToInsert.size() > 0) {
-            insertPlans(plansToInsert);
-        }
-
-        return output.toString();
-    }
-
-
-
     // Nem måde at bygge en plan med ResultSet
     public Plan buildPlan(ResultSet rs) throws SQLException {
         Plan plan = new Plan();
@@ -251,10 +170,7 @@ public class PlanDB implements PlanDAO {
         List<Plan> plansToInsert = new ArrayList<>();
 
         for (Candy candy : eligibleCandies) {
-
-            Recipes recipe = recipeDB.getRecipeByCandyId(candy.getCandyID());
-
-            // Create plan
+            Recipes recipe = recipeDB.getRecipeByCandyId(candy.getCandyID()); // already called before, could reuse
             Plan plan = new Plan();
             plan.setCandyID(candy.getCandyID());
             plan.setLocationID(employee.getEmployeeId());
@@ -274,6 +190,7 @@ public class PlanDB implements PlanDAO {
 
         return output.toString();
     }
+
 
     
     
