@@ -1,106 +1,65 @@
 package GUI;
 
 import java.awt.EventQueue;
-import Database.RecipeDB;
-
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import Model.*;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 import Connection.DataAccessException;
-import Database.RecipeDB;
-import Model.Recipes;
-import Test.TryMe;
+import Database.PlanDB;
 
-import java.awt.GridLayout;
-import javax.swing.JButton;
 import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PlanGui extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PlanGui frame = new PlanGui();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    PlanGui frame = new PlanGui();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Create the frame.
-	 */
-	public PlanGui() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JButton btnNewButton = new JButton("Planlæg produktion");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				openNewWindow();
-			}
-		});
-		contentPane.add(btnNewButton);
+    public PlanGui() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 600, 500);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-	}
-	
-	private void openNewWindow() {
-	    try {
-	        int candyId = 1; // test
-	        RecipeDB rDB = new RecipeDB();
-	        Recipes recipe = rDB.getRecipeByCandyId(candyId);
+        JButton btnGeneratePlan = new JButton("Planlæg produktion");
+        contentPane.add(btnGeneratePlan);
 
-	        JPanel panel = new JPanel();
-	        panel.setLayout(new GridLayout(0, 1)); // dynamic rows
+        JTextArea outputArea = new JTextArea(25, 50);
+        outputArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+        contentPane.add(scrollPane);
 
-	        if (recipe == null) {
-	            panel.add(new JLabel("Ingen opskrift fundet for CandyID " + candyId));
-	        } else {
-	            panel.add(new JLabel("Navn: " + recipe.getName()));
-	            panel.add(new JLabel("Sværhedsgrad: " + recipe.getDifficulty()));
-	            
-	            panel.add(new JLabel("Ingredienser:" + recipe.getIngridients().toString()));
-	            
-
-
-	            // Example button (you can add more)
-	            JButton btnPlan = new JButton("Afslut produktion");
-	            panel.add(btnPlan);
-
-	            btnPlan.addActionListener(e -> {
-	                System.out.println("Produktion afsluttet");
-	                panel.setVisible(false);
-	                contentPane.setVisible(false);
-	            });
-	        }
-
-	        // Replace GUI content
-	        setContentPane(panel);
-	        revalidate();
-	        repaint();
-
-	    } catch (DataAccessException e) {
-	        e.printStackTrace();
-	    }
-	}
+        btnGeneratePlan.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    PlanDB planDB = new PlanDB();
+                    // Generate plans for e.g., max 5 candies
+                    String planOutput = planDB.createPlannedProduction(5);
+                    outputArea.setText(planOutput);
+                } catch (DataAccessException ex) {
+                    outputArea.setText("Fejl: " + ex.getMessage());
+                }
+            }
+        });
+    }
 }

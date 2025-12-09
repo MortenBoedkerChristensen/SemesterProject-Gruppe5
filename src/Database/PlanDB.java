@@ -90,13 +90,15 @@ public class PlanDB implements PlanDAO {
         return plan;
     }
     
-    public void createPlannedProduction(int maxCandies) throws DataAccessException {
+    public String createPlannedProduction(int maxCandies) throws DataAccessException {
+
+        StringBuilder output = new StringBuilder();
 
         // Step 1: Get low-stock candies
         List<Candy> lowStock = candyDB.getLowStockCandy();
-        if (lowStock.isEmpty()) {
-            System.out.println("No candies need production.");
-            return;
+        if (lowStock.size() == 0) {
+            output.append("No candies need production.\n");
+            return output.toString();
         }
 
         List<Candy> candiesToPlan;
@@ -110,55 +112,57 @@ public class PlanDB implements PlanDAO {
         List<Employee> allEmployees = employeeDB.getAllEmployees();
 
         // Step 3: Create plans
-        List<Plan> plansToInsert = new ArrayList<>();
+        List<Plan> plansToInsert = new ArrayList<Plan>();
 
-        for (Candy candy : candiesToPlan) {
+        for (int i = 0; i < candiesToPlan.size(); i++) {
+            Candy candy = candiesToPlan.get(i);
 
             Recipes recipe = recipeDB.getRecipeByCandyId(candy.getCandyID());
             if (recipe == null) {
-                System.out.println("No recipe found for candy: " + candy.getName());
+                output.append("No recipe found for candy: ").append(candy.getName()).append("\n");
                 continue;
             }
 
             // Find eligible employees
-            List<Employee> eligible = new ArrayList<>();
-            for (Employee e : allEmployees) {
+            Employee assigned = null;
+            for (int j = 0; j < allEmployees.size(); j++) {
+                Employee e = allEmployees.get(j);
                 if (e.getNiveau() >= recipe.getDifficulty()) {
-                    eligible.add(e);
+                    assigned = e;
+                    break;
                 }
             }
 
-            if (eligible.isEmpty()) {
-                System.out.println("No eligible employees for candy: " + candy.getName());
+            if (assigned == null) {
+                output.append("No eligible employees for candy: ").append(candy.getName()).append("\n");
                 continue;
             }
-
-            Employee assigned = eligible.get(0);
 
             // Create plan
             Plan plan = new Plan();
             plan.setCandyID(candy.getCandyID());
             plan.setLocationID(assigned.getEmployeeId());
-            plan.setDate(new Date(System.currentTimeMillis()));
+            plan.setDate(new java.sql.Date(System.currentTimeMillis()));
             plan.setRecipe(recipe);
 
             plansToInsert.add(plan);
 
-            // Print info
-            System.out.println("Candy: " + candy.getName() +
-                               ", Employee: " + assigned.getName() +
-                               ", Recipe: " + recipe.getName() +
-                               ", Difficulty: " + recipe.getDifficulty());
-            System.out.println("Ingredients:");
-            recipe.printIngredients();
-            System.out.println("---------------------------");
+            // Append info using recipe.toString()
+            output.append("Candy: ").append(candy.getName())
+                  .append(", Employee: ").append(assigned.getName()).append("\n");
+            output.append(recipe.toString());
+            output.append("---------------------------\n");
         }
 
         // Step 4: Insert plans
-        if (!plansToInsert.isEmpty()) {
+        if (plansToInsert.size() > 0) {
             insertPlans(plansToInsert);
         }
+
+        return output.toString();
     }
+
+
 
     // Nem måde at bygge en plan med ResultSet
     public Plan buildPlan(ResultSet rs) throws SQLException {
