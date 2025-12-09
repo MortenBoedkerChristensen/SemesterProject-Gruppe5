@@ -1,5 +1,6 @@
 package Database;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,20 +57,44 @@ public class PlanDB implements PlanDAO {
     public void insertPlans(List<Plan> plans) throws DataAccessException {
         String sql = "INSERT INTO [Plan] (date, status, locationID, candyID) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = dbConn.getConnection().prepareStatement(sql)) {
-            for (Plan plan : plans) {
-                stmt.setDate(1, plan.getDate());
-                stmt.setString(2, plan.getStatus() != null ? plan.getStatus().name() : Plan.Status.STARTED.name());
-                stmt.setInt(3, plan.getLocationID());
-                stmt.setInt(4, plan.getCandyID());
-                stmt.addBatch();
+        Connection conn = null;
+        try {
+            conn = dbConn.getConnection();
+            conn.setAutoCommit(false); // Starter transaction
+
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                for (Plan plan : plans) {
+                    stmt.setDate(1, plan.getDate());
+                    stmt.setString(2, plan.getStatus() != null ? plan.getStatus().name() : Plan.Status.STARTED.name());
+                    stmt.setInt(3, plan.getLocationID());
+                    stmt.setInt(4, plan.getCandyID());
+                    stmt.addBatch();
+                }
+                stmt.executeBatch();
             }
-            stmt.executeBatch();
+
+            conn.commit(); // Commit transaction
 
         } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback(); 
+                } catch (SQLException ex) {
+                    throw new DataAccessException("Rollback failed", ex);
+                }
+            }
             throw new DataAccessException("Failed to insert plans", e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true); // Reset autocommit
+                } catch (SQLException ex) {
+                    throw new DataAccessException("Failed to reset auto-commit", ex);
+                }
+            }
         }
     }
+
 
     // Finder på ID
     @Override
