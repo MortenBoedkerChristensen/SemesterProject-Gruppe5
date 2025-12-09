@@ -60,6 +60,30 @@
 
 	        return employees; // never returns null
 	    }
+	    
+	    public Employee FindByName(String name) throws DataAccessException {
+	        String sql = "SELECT employeeId, name, niveau FROM Employee WHERE name = ?";
+	        Employee employee = null;
+	
+	        try {
+	            PreparedStatement stmt = dbConn.getConnection().prepareStatement(sql);
+	            stmt.setString(1, name);
+	
+	            ResultSet rs = stmt.executeQuery();
+	            if (rs.next()) {
+	                int empId = rs.getInt("employeeId");
+	                String empName = rs.getString("name");
+	                int niveau = rs.getInt("niveau");
+	
+	                employee = new Employee(empId, empName, niveau);
+	            }
+	
+	        } catch (SQLException e) {
+	            throw new DataAccessException("Failed to retrieve employee with name = " + name, e);
+	        }
+	
+	        return employee;
+	    }
 
 	    
 	}

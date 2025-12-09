@@ -2,8 +2,6 @@ package Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-
 import Connection.DataAccessException;
 import Model.Plan;
 
