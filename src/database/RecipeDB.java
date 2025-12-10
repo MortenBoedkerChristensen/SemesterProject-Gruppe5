@@ -2,7 +2,7 @@ package database;
 
 import connection.DBConnection;
 import connection.DataAccessException;
-import model.Recipes;
+import model.Recipe;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,8 +21,8 @@ public class RecipeDB {
     	}
     }
 
-    public Recipes getRecipeByCandyId(int candyId) throws DataAccessException {
-        Recipes recipe = null;
+    public Recipe getRecipeByCandyId(int candyId) throws DataAccessException {
+        Recipe recipe = null;
 
         try (PreparedStatement stmt = conn.prepareStatement(
                 "SELECT Ingredients, Name, Niveau, QtyID FROM Recipe WHERE CandyID = ?"
@@ -32,7 +32,7 @@ public class RecipeDB {
                 while (rs.next()) {
                     if (recipe == null) {
                         // First row: initialize recipe
-                        recipe = new Recipes(candyId, rs.getString("Name"), rs.getInt("Niveau"));
+                        recipe = new Recipe(candyId, rs.getString("Name"), rs.getInt("Niveau"));
                     }
                     // Add ingredient from this row
                     String ingredientName = rs.getString("Ingredients");

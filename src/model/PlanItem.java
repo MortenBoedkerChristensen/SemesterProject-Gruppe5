@@ -1,20 +1,36 @@
 package model;
 
 public class PlanItem {
-	private Recipes recipe;
+	private Recipe recipe;
 	private int qty;
+	private Status status;
 	
-	public PlanItem(Recipes recipe, int qty) {
+	public PlanItem(Recipe recipe, int qty) {
 		this.recipe = recipe;
 		this.qty = qty;
+		
+		
 	}
+	public enum Status {
+        STARTED,
+        COOKING,
+        READY
+    }
 	
 	
-	public Recipes getRecipe() {
+	public Recipe getRecipe() {
 		return recipe;
 	}
 	
-	public void setRecipe(Recipes recipe) {
+	public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+	
+	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
 	}
 	

@@ -2,15 +2,16 @@ package model;
 
 import java.util.HashMap;
 
-public class Recipes {
-	private int candyID;
+public class Recipe {
+	private int recipeID;
+	private Candy candy;
 	private String name;
 	private int difficulty;
 	private HashMap<String, Integer> ingridients;
 	
 	
-	public Recipes(int candyID, String name, int difficulty) {
-		this.candyID = candyID;
+	public Recipe(int recipeID, String name, int difficulty) {
+		this.recipeID = recipeID;
 		this.name = name;
 		this.difficulty = difficulty;
 		ingridients = new HashMap<>();
@@ -18,12 +19,12 @@ public class Recipes {
 
 
 	public int getCandyID() {
-		return candyID;
+		return recipeID;
 	}
 
 
-	public void setCandyID(int candyID) {
-		this.candyID = candyID;
+	public void setCandyID(int recipeID) {
+		this.recipeID = recipeID;
 	}
 
 
@@ -76,7 +77,7 @@ public class Recipes {
 	}
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("CandyID: ").append(candyID).append("\n");
+		sb.append("CandyID: ").append(candy.getCandyID()).append("\n");
 		sb.append("Name: ").append(name).append("\n");
 		sb.append("Difficulty: ").append(difficulty).append("\n");
 		sb.append("Ingredients:\n");

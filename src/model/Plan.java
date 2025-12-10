@@ -1,28 +1,26 @@
 package model;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Plan {
 
     private int planID;
     private Date date;
-    private Status status;
-    private int locationID;     // matches SQL table
+    private List<PlanItem> plan;
+    
+  /*  private int locationID;     // matches SQL table
     private int candyID;        // matches SQL table
     private Recipes recipe;     // single recipe per candy
-
+*/
     // Enum for status
-    public enum Status {
-        STARTED,
-        COOKING,
-        READY
-    }
+    
 
     // Constructors
     public Plan() {}
 
-    public Plan(Recipes recipe) {
-        this.recipe = recipe;
+    public Plan(List<PlanItem> plan) {
+        this.plan = plan;
     }
 
     // ----- ID -----
@@ -42,7 +40,16 @@ public class Plan {
     public void setDate(Date date) {
         this.date = date;
     }
+    
+    public List<PlanItem> getPlan() {
+    	return plan;
+    }
+    
+    public PlanItem getPlanItem(int index) {
+    	return plan.get(index);
+    }
 
+    /*
     // ----- STATUS -----
     public Status getStatus() {
         return status;
@@ -60,6 +67,7 @@ public class Plan {
     public void setLocationID(int locationID) {
         this.locationID = locationID;
     }
+    
 
     // ----- CANDY -----
     public int getCandyID() {
@@ -71,11 +79,11 @@ public class Plan {
     }
 
     // ----- RECIPE -----
-    public Recipes getRecipe() {
+    public Recipe getRecipe() {
         return recipe;
     }
 
-    public void setRecipe(Recipes recipe) {
+    public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
-    }
+    } */
 }

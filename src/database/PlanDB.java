@@ -13,7 +13,7 @@ import connection.DataAccessException;
 import model.Candy;
 import model.Employee;
 import model.Plan;
-import model.Recipes;
+import model.Recipe;
 
 public class PlanDB implements PlanDAO {
 
@@ -146,7 +146,7 @@ public class PlanDB implements PlanDAO {
         List<Candy> eligibleCandies = new ArrayList<>();
 
         for (Candy candy : lowStock) {
-            Recipes recipe = recipeDB.getRecipeByCandyId(candy.getCandyID());
+            Recipe recipe = recipeDB.getRecipeByCandyId(candy.getCandyID());
             if (recipe == null) {
                 output.append("No recipe found for candy: ").append(candy.getName()).append("\n");
                 continue;
@@ -170,7 +170,7 @@ public class PlanDB implements PlanDAO {
         List<Plan> plansToInsert = new ArrayList<>();
 
         for (Candy candy : eligibleCandies) {
-            Recipes recipe = recipeDB.getRecipeByCandyId(candy.getCandyID()); // already called before, could reuse
+            Recipe recipe = recipeDB.getRecipeByCandyId(candy.getCandyID()); // already called before, could reuse
             Plan plan = new Plan();
             plan.setCandyID(candy.getCandyID());
             plan.setLocationID(employee.getEmployeeId());

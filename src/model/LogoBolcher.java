@@ -10,7 +10,7 @@ public class LogoBolcher extends Candy {
         super(id, type, price, minStock, maxStock, date, stock, name);
     }
 
-    public LogoBolcher(Candy candy, Recipes recipe) {
+    public LogoBolcher(Candy candy, Recipe recipe) {
         super(
             recipe.getCandyID(),
             candy.getType(),
