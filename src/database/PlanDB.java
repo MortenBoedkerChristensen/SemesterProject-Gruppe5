@@ -54,6 +54,9 @@ public class PlanDB implements PlanDAO {
     }
 
     // Laver flere planer med list
+    /*#TODO
+     * Når en plan gemmes i db skal PlanItems også gemmes i db som [Fkey, planID][RecipeID][qty] eller lign.
+     */
     public void insertPlans(List<Plan> plans) throws DataAccessException {
         String sql = "INSERT INTO [Plan] (date, status, locationID, candyID) VALUES (?, ?, ?, ?)";
 
@@ -108,6 +111,11 @@ public class PlanDB implements PlanDAO {
 
         return plan;
     }
+    /*
+     * #TODO
+     * Når en plan bygges, SELECT * From PlanItems Where PlanID === PlanID;
+     * og byg PlanItems og tilføje til Plan Objekt
+     */
     // Nem måde at bygge en plan med ResultSet
     public Plan buildPlan(ResultSet rs) throws SQLException {
         Plan plan = new Plan();

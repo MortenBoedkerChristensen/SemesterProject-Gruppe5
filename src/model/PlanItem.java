@@ -8,6 +8,9 @@ public class PlanItem {
 	public PlanItem(Recipe recipe, int qty) {
 		this.recipe = recipe;
 		this.qty = qty;
+		/*
+		 * #TODO //
+		 */
 		
 		
 	}

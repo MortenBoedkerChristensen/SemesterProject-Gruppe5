@@ -8,7 +8,11 @@ public class Recipe {
 	private String name;
 	private int difficulty;
 	private HashMap<String, Integer> ingridients;
-	
+	/*
+	 * #TODO
+	 * Refactor metoder til at bruge Candy objekt og recipeID
+	 * Tilføj description
+	 */
 	
 	public Recipe(int recipeID, String name, int difficulty) {
 		this.recipeID = recipeID;
@@ -17,7 +21,7 @@ public class Recipe {
 		ingridients = new HashMap<>();
 	}
 
-
+	
 	public int getCandyID() {
 		return recipeID;
 	}
