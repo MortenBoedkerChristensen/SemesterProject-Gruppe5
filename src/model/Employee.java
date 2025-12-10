@@ -27,14 +27,10 @@ public class Employee {
 		return name;
 	}
 	
-	public void niveau(int niveau) {
-		this.niveau = niveau;
-	}
-	
 	public int getNiveau() {
 		return niveau;
 	}
-	public int setNiveau(int niveau) {
-		return this.niveau = niveau;
+	public void setNiveau(int niveau) {
+		this.niveau = niveau;
 	}
 }
