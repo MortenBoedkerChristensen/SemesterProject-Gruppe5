@@ -1,8 +1,8 @@
-package Database;
+package database;
 
-import Model.Recipes;
-import Connection.DBConnection;
-import Connection.DataAccessException;
+import connection.DBConnection;
+import connection.DataAccessException;
+import model.Recipes;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

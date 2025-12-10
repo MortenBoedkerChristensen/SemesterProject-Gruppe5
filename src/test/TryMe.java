@@ -1,13 +1,13 @@
-package Test;
+package test;
 
-import Database.CandyDB;
-import Database.EmployeeDB;
-import Database.PlanDB;
-import Controller.PlanController;
-import Model.Candy;
-import Model.Employee;
-import Model.Plan;
-import Connection.DataAccessException;
+import connection.DataAccessException;
+import controller.PlanController;
+import database.CandyDB;
+import database.EmployeeDB;
+import database.PlanDB;
+import model.Candy;
+import model.Employee;
+import model.Plan;
 
 import java.sql.Date;
 import java.util.List;

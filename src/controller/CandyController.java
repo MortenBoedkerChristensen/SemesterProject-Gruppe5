@@ -1,14 +1,14 @@
-package Controller;
+package controller;
 
 import java.util.List;
 
-import Connection.DataAccessException;
-import Database.CandyDB;
-import Model.Bolcher;
-import Model.Candy;
-import Model.GourmetBolcher;
-import Model.LogoBolcher;
-import Model.Lollipop;
+import connection.DataAccessException;
+import database.CandyDB;
+import model.Bolcher;
+import model.Candy;
+import model.GourmetBolcher;
+import model.LogoBolcher;
+import model.Lollipop;
 
 public class CandyController {
     private CandyDB candydb;

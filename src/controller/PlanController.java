@@ -1,7 +1,7 @@
-package Controller;
+package controller;
 
-import Connection.DataAccessException;
-import Database.PlanDB;
+import connection.DataAccessException;
+import database.PlanDB;
 
 public class PlanController {
 

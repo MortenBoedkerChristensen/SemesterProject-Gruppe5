@@ -1,9 +1,9 @@
-package Database;
+package database;
 
 import java.util.List;
 
-import Connection.DataAccessException;
-import Model.Candy;
+import connection.DataAccessException;
+import model.Candy;
 
 public interface CandyDAO {
 	

@@ -1,4 +1,4 @@
-package Database;
+package database;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Connection.DBConnection;
-import Connection.DataAccessException;
-import Model.Candy;
-import Model.Employee;
-import Model.Plan;
-import Model.Recipes;
+import connection.DBConnection;
+import connection.DataAccessException;
+import model.Candy;
+import model.Employee;
+import model.Plan;
+import model.Recipes;
 
 public class PlanDB implements PlanDAO {
 

@@ -1,11 +1,9 @@
-package Controller;
+package controller;
 
-import Database.EmployeeDAO;
-import Database.EmployeeDB;
-import Connection.DataAccessException;
-import Model.Employee;
-import Model.Candy;
-import Database.*;
+import connection.DataAccessException;
+import database.*;
+import model.Candy;
+import model.Employee;
 
 public class EmployeeController {
 	CandyDAO CandyDB;

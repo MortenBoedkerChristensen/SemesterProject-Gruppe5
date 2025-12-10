@@ -1,9 +1,9 @@
-package Database;
+package database;
 
 import java.util.List;
 
-import Connection.DataAccessException;
-import Model.Employee;
+import connection.DataAccessException;
+import model.Employee;
 
 public interface EmployeeDAO {
 	

@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -10,8 +10,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.JScrollPane;
 
-import Connection.DataAccessException;
-import Database.PlanDB;
+import connection.DataAccessException;
+import database.PlanDB;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;

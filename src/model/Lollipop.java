@@ -1,14 +1,14 @@
-package Model;
+package model;
 
 import java.sql.Date;
 
-public class GourmetBolcher extends Candy {
+public class Lollipop extends Candy {
 
-    public GourmetBolcher(int id, String type, int price, int stock, int minStock, int maxStock, Date date, String name) {
+    public Lollipop(int id, String type, int price, int stock, int minStock, int maxStock, Date date, String name) {
         super(id, type, price, minStock, maxStock, date, stock, name);
     }
 
-    public GourmetBolcher(Candy candy, Recipes recipe) {
+    public Lollipop(Candy candy, Recipes recipe) {
         super(
             recipe.getCandyID(),
             candy.getType(),

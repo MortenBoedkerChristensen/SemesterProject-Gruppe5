@@ -1,9 +1,10 @@
-package Database;
+package database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import Connection.DataAccessException;
-import Model.Plan;
+
+import connection.DataAccessException;
+import model.Plan;
 
 public interface PlanDAO {
 

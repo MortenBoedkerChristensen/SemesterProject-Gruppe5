@@ -1,16 +1,16 @@
-package Database;
+package database;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import Connection.DBConnection;
-import Connection.DataAccessException;
-import Model.Bolcher;
-import Model.Candy;
-import Model.GourmetBolcher;
-import Model.LogoBolcher;
-import Model.Lollipop;
+import connection.DBConnection;
+import connection.DataAccessException;
+import model.Bolcher;
+import model.Candy;
+import model.GourmetBolcher;
+import model.LogoBolcher;
+import model.Lollipop;
 
 public class CandyDB implements CandyDAO {
 

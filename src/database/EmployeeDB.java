@@ -1,14 +1,14 @@
-	package Database;
+	package database;
 	
 	import java.sql.PreparedStatement;
 	import java.sql.ResultSet;
 	import java.sql.SQLException;
 	import java.util.ArrayList;
 	import java.util.List;
-	
-	import Connection.DBConnection;
-	import Connection.DataAccessException;
-	import Model.Employee;
+
+import connection.DBConnection;
+import connection.DataAccessException;
+import model.Employee;
 	
 	public class EmployeeDB implements EmployeeDAO {
 	
