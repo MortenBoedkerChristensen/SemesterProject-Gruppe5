@@ -20,6 +20,10 @@ public class RecipeDB {
     		System.out.println("Could not connect");
     	}
     }
+    /*
+     * #TODO
+     * Opdater til nuværende version af Recipe
+     */
 
     public Recipe getRecipeByCandyId(int candyId) throws DataAccessException {
         Recipe recipe = null;

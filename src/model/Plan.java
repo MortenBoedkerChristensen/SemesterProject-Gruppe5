@@ -8,6 +8,11 @@ public class Plan {
     private int planID;
     private Date date;
     private List<PlanItem> plan;
+    /*
+     * #TODO
+     * Metoder til at håndtere PlanItem
+     * Display af aktiv plan => UI
+     */
     
   /*  private int locationID;     // matches SQL table
     private int candyID;        // matches SQL table
