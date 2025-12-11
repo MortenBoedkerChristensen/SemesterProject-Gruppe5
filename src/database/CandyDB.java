@@ -24,29 +24,35 @@ public class CandyDB implements CandyDAO {
         }
     }
 
-    // INSERT
     @Override
     public Candy insert(Candy candy) throws DataAccessException {
-        String sql = "INSERT INTO candy (CandyID, Type, Price, Stock, MinStock, MaxStock, Date, Name) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO candy (Type, Price, Stock, MinStock, MaxStock, Date, Name) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, candy.getCandyID());
-            stmt.setString(2, candy.getType());
-            stmt.setInt(3, candy.getPrice());
-            stmt.setInt(4, candy.getStock());
-            stmt.setInt(5, candy.getMinStock());
-            stmt.setInt(6, candy.getMaxStock());
-            stmt.setDate(7, candy.getDate());
-            stmt.setString(8, candy.getName());
+        try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, candy.getType());
+            stmt.setInt(2, candy.getPrice());
+            stmt.setInt(3, candy.getStock());
+            stmt.setInt(4, candy.getMinStock());
+            stmt.setInt(5, candy.getMaxStock());
+            stmt.setDate(6, candy.getDate());
+            stmt.setString(7, candy.getName());
 
             stmt.executeUpdate();
+
+            // get generated ID
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                candy.setCandyID(rs.getInt(1));
+            }
+
             return candy;
 
         } catch (SQLException e) {
             throw new DataAccessException("Failed to insert candy", e);
         }
     }
+
 
     // UPDATE
     @Override
