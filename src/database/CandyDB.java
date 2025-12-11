@@ -15,6 +15,14 @@ import model.Lollipop;
 public class CandyDB implements CandyDAO {
 
     private Connection conn;
+    
+    private final String INSERTCANDY = "INSERT INTO candy (CandyID, Type, Price, Stock, MinStock, MaxStock, Date, Name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE = "UPDATE candy SET Type = ?, Price = ?, Stock = ?, MinStock = ?, MaxStock = ?, Date = ?, Name = ? WHERE CandyID = ?";
+    private final String DELETE = "DELETE FROM candy WHERE CandyID = ?";
+    private final String FINDBYID  = "SELECT * FROM candy WHERE CandyID = ?";
+    private final String GETLOWSTOCKCANDY  = "SELECT * FROM candy WHERE Stock < MinStock";
+    private final String GETALLCANDY = "SELECT * FROM candy";
+    
 
     public CandyDB() {
         try {
@@ -27,7 +35,7 @@ public class CandyDB implements CandyDAO {
     // INSERT
     @Override
     public Candy insert(Candy candy) throws DataAccessException {
-        String sql = "INSERT INTO candy (CandyID, Type, Price, Stock, MinStock, MaxStock, Date, Name) "
+        String sql = "INSERT INTO Candy (CandyID, CandyType, Price, Stock, MinStock, MaxStock, Date, CandyName) "
                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -37,7 +45,7 @@ public class CandyDB implements CandyDAO {
             stmt.setInt(4, candy.getStock());
             stmt.setInt(5, candy.getMinStock());
             stmt.setInt(6, candy.getMaxStock());
-            stmt.setDate(7, candy.getDate());
+          //  stmt.setDate(7, candy.getDate());
             stmt.setString(8, candy.getName());
 
             stmt.executeUpdate();
@@ -60,7 +68,7 @@ public class CandyDB implements CandyDAO {
             stmt.setInt(3, candy.getStock());
             stmt.setInt(4, candy.getMinStock());
             stmt.setInt(5, candy.getMaxStock());
-            stmt.setDate(6, candy.getDate());
+          //  stmt.setDate(6, candy.getDate());
             stmt.setString(7, candy.getName());
             stmt.setInt(8, candy.getCandyID());
 
@@ -94,16 +102,14 @@ public class CandyDB implements CandyDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return new Candy(
-                        rs.getInt("CandyID"),
-                        rs.getString("Type"),
-                        rs.getInt("Price"),
+                return buildCandyObject(
+                   		rs.getInt("CandyID"),
+                        rs.getString("CandyType"),
                         rs.getInt("MinStock"),
-                        rs.getInt("MaxStock"),
-                        rs.getDate("Date"),
-                        rs.getInt("Stock"),
-                        rs.getString("Name")
-                );
+                        rs.getInt("MaxStock"),                     
+                        rs.getString("CandyName"));
+                   
+                
             }
             return null;
 
@@ -116,23 +122,20 @@ public class CandyDB implements CandyDAO {
     @Override
     public List<Candy> getAllCandy() throws DataAccessException {
         List<Candy> list = new ArrayList<>();
-        String sql = "SELECT * FROM candy";
-
+        String sql = "SELECT * FROM Candy";
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
-            while (rs.next()) {
-                Candy candy = new Candy(
-                        rs.getInt("CandyID"),
-                        rs.getString("Type"),
-                        rs.getInt("Price"),
+        	while (rs.next()) { 
+                list.add(buildCandyObject(
+                   		rs.getInt("CandyID"),
+                        rs.getString("CandyType"),
                         rs.getInt("MinStock"),
-                        rs.getInt("MaxStock"),
-                        rs.getDate("Date"),
-                        rs.getInt("Stock"),
-                        rs.getString("Name")
-                );
-                list.add(candy);
+                        rs.getInt("MaxStock"),                     
+                        rs.getString("CandyName")));
+                System.out.println("Object Build");
+               
+            
             }
 
         } catch (SQLException e) {
@@ -145,83 +148,20 @@ public class CandyDB implements CandyDAO {
     @Override
     public List<Candy> getCandyByType(String type) throws DataAccessException {
         List<Candy> list = new ArrayList<>();
-        String sql = "SELECT * FROM candy WHERE Type = ?";
+        String sql = "SELECT * FROM candy WHERE CandyType = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, type);
             ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                Candy candy;
-
-                switch (type.toLowerCase()) {
-                    case "bolcher":
-                        candy = new Bolcher(
-                                rs.getInt("CandyID"),
-                                rs.getString("Type"),
-                                rs.getInt("Price"),
-                                rs.getInt("Stock"),
-                                rs.getInt("MinStock"),
-                                rs.getInt("MaxStock"),
-                                rs.getDate("Date"),
-                                rs.getString("Name")
-                        );
-                        break;
-
-                    case "logobolcher":
-                        candy = new LogoBolcher(
-                                rs.getInt("CandyID"),
-                                rs.getString("Type"),
-                                rs.getInt("Price"),
-                                rs.getInt("Stock"),
-                                rs.getInt("MinStock"),
-                                rs.getInt("MaxStock"),
-                                rs.getDate("Date"),
-                                rs.getString("Name")
-                        );
-                        break;
-
-                    case "gourmetbolcher":
-                        candy = new GourmetBolcher(
-                                rs.getInt("CandyID"),
-                                rs.getString("Type"),
-                                rs.getInt("Price"),
-                                rs.getInt("Stock"),
-                                rs.getInt("MinStock"),
-                                rs.getInt("MaxStock"),
-                                rs.getDate("Date"),
-                                rs.getString("Name")
-                        );
-                        break;
-
-                    case "lollipop":
-                        candy = new Lollipop(
-                                rs.getInt("CandyID"),
-                                rs.getString("Type"),
-                                rs.getInt("Price"),
-                                rs.getInt("Stock"),
-                                rs.getInt("MinStock"),
-                                rs.getInt("MaxStock"),
-                                rs.getDate("Date"),
-                                rs.getString("Name")
-                        );
-                        break;
-
-                    default:
-                        candy = new Candy(
-                                rs.getInt("CandyID"),
-                                rs.getString("Type"),
-                                rs.getInt("Price"),
-                                rs.getInt("MinStock"),
-                                rs.getInt("MaxStock"),
-                                rs.getDate("Date"),
-                                rs.getInt("Stock"),
-                                rs.getString("Name")
-                        );
-                        break;
-                }
-
-                list.add(candy);
+            while (rs.next()) { 
+                list.add(buildCandyObject(
+                   		rs.getInt("CandyID"),
+                        rs.getString("CandyType"),
+                        rs.getInt("MinStock"),
+                        rs.getInt("MaxStock"),                     
+                        rs.getString("CandyName")));
+               
             }
 
         } catch (SQLException e) {
@@ -239,17 +179,12 @@ public class CandyDB implements CandyDAO {
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Candy candy = new Candy(
-                        rs.getInt("CandyID"),
-                        rs.getString("Type"),
-                        rs.getInt("Price"),
+                list.add(buildCandyObject(
+                		rs.getInt("CandyID"),
+                        rs.getString("CandyType"),
                         rs.getInt("MinStock"),
-                        rs.getInt("MaxStock"),
-                        rs.getDate("Date"),
-                        rs.getInt("Stock"),
-                        rs.getString("Name")
-                );
-                list.add(candy);
+                        rs.getInt("MaxStock"),                     
+                        rs.getString("CandyName")));
             }
 
         } catch (SQLException e) {
@@ -257,5 +192,27 @@ public class CandyDB implements CandyDAO {
         }
 
         return list;
+    }
+    
+    private Candy buildCandyObject(int candyID, String type, int minStock, int maxStock, String name) {
+    	Candy rs = null;
+    	switch(type.toLowerCase()) {
+    	case "bolcher":
+    	case "bolsjer":
+    		rs = new Bolcher(candyID, type, 50, 100 , 750, 300, name);
+    		break;
+    	case "lollipop":
+    	case "slikkepind":
+    		rs = new Lollipop(candyID, type, 50, 100 , 750, 300, name);
+    		break;
+    	case "gourmetBolcher":
+    	case "gourmetBoljer":
+    		rs = new GourmetBolcher(candyID, type, 50, 100 , 750, 300, name);
+    		break;
+    	
+    	}
+    	
+    	
+    	return rs;
     }
 }

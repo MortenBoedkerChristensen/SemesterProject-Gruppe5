@@ -6,8 +6,8 @@ public class LogoBolcher extends Candy {
 
     private String firma;
 
-    public LogoBolcher(int id, String type, int price, int stock, int minStock, int maxStock, Date date, String name) {
-        super(id, type, price, minStock, maxStock, date, stock, name);
+    public LogoBolcher(int id, String type, int price, int stock, int minStock, int maxStock,  String name) {
+        super(id, type, price, minStock, maxStock, stock, name);
     }
 
     public LogoBolcher(Candy candy) {
@@ -17,7 +17,7 @@ public class LogoBolcher extends Candy {
             candy.getPrice(),
             candy.getMinStock(),
             candy.getMaxStock(),
-            new Date(System.currentTimeMillis()),
+           
             candy.getStock(),
             candy.getName()
         );

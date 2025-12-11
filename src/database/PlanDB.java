@@ -1,4 +1,4 @@
-package database;
+  package database;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -13,6 +13,7 @@ import connection.DataAccessException;
 import model.Candy;
 import model.Employee;
 import model.Plan;
+import model.PlanItem;
 import model.Recipe;
 
 public class PlanDB implements PlanDAO {
@@ -21,6 +22,8 @@ public class PlanDB implements PlanDAO {
     private  CandyDB candyDB = new CandyDB();
     private  EmployeeDB employeeDB = new EmployeeDB();
     private  RecipeDB recipeDB = new RecipeDB();
+    private final String SELECT_PLAN = "SELECT * FROM ProdPlan WHERE PlanID = ?";
+    private final String SELECT_PLANITEMS = "SELECT * FROM PlanItem WHERE PlanID = ?";
 
     public PlanDB() throws DataAccessException {
         dbConn = DBConnection.getInstance();
@@ -97,7 +100,7 @@ public class PlanDB implements PlanDAO {
     @Override
     public Plan findById(int id) throws DataAccessException {
         Plan plan = null;
-        String sql = "SELECT planID, date, status, locationID, candyID FROM [Plan] WHERE planID = ?";
+        String sql = SELECT_PLAN;
 
         try (PreparedStatement stmt = dbConn.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
@@ -111,13 +114,21 @@ public class PlanDB implements PlanDAO {
 
         return plan;
     }
+    
+    private List<PlanItem> getPlanItems(int planID) {
+    	List<PlanItem> planItems = new ArrayList<>();
+    	try(PreparedStatement stmt = dbConn.getConnection().prepareStatement(SELECT_PLANITEMS)) {
+    		stmt.setInt(1, planID);
+    	}
+    	
+    }
     /*
      * #TODO
      * Når en plan bygges, SELECT * From PlanItems Where PlanID === PlanID;
      * og byg PlanItems og tilføje til Plan Objekt
      */
     // Nem måde at bygge en plan med ResultSet
-    public Plan buildPlan(ResultSet rs) throws SQLException {
+   /* public Plan buildPlan(ResultSet rs) throws SQLException {
         Plan plan = new Plan();
         plan.setPlanID(rs.getInt("planID"));
         plan.setDate(rs.getDate("date"));
@@ -129,6 +140,11 @@ public class PlanDB implements PlanDAO {
         plan.setCandyID(rs.getInt("candyID"));
 
         return plan;
+    } */
+    
+    private Plan buildPlan(ResultSet rs) {
+    	
+    	
     }
     
     

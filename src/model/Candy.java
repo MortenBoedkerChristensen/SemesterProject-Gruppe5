@@ -9,18 +9,18 @@ public abstract class Candy {
     private int price;
     private int minStock;
     private int maxStock;
-    private Date date;
+   // private Date date;
     private int stock;
     private String name;
 
-    public Candy(int candyID, String type, int price, int minStock, int maxStock, Date date, int stock, String name) {
+    public Candy(int candyID, String type, int price, int minStock, int maxStock, int stock, String name) {
 		this.stock = stock;
 		this.candyID = candyID;
         this.type = type;
         this.price = price;
         this.minStock = minStock;
         this.maxStock = maxStock;
-        this.date = date;
+        
         this.name = name;
     }
 
@@ -31,7 +31,7 @@ public abstract class Candy {
     public int getStock() { return stock; }
     public int getMinStock() { return minStock; }
     public int getMaxStock() { return maxStock; }
-    public Date getDate() { return date; }
+    
     public String getName() { return name; }
 
     // Setters
@@ -39,15 +39,14 @@ public abstract class Candy {
     public void setPrice(int price) { this.price = price; }
     public void setMinStock(int minStock) { this.minStock = minStock; }
     public void setMaxStock(int maxStock) { this.maxStock = maxStock; }
-    public void setDate(Date date) { this.date = date; }
+    
     public void setStock(int stock) { this.stock = stock; }
     public void setCandyID(int candyID) { this.candyID = candyID; }
     public void setName(String name) { this.name = name; }
     
     public String toString() {
 		return "Candy [candyID=" + candyID + ", type="
-				+ type + ", price=" + price + ", minStock=" + minStock + ", maxStock=" + maxStock + ", date=" + date
-				+ ", stock=" + stock + ", name=" + name + "]";
+				+ type + ", price=" + price + ", minStock=" + minStock + ", maxStock=" + maxStock + ", stock=" + stock + ", name=" + name + "]";
 }
 
 	public int getRequiredNiveau() {

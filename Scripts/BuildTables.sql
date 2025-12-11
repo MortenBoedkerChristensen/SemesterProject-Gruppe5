@@ -1,0 +1,58 @@
+
+DROP TABLE IF EXISTS PlanItem;
+DROP TABLE IF EXISTS ProdPlan;
+DROP TABLE IF EXISTS RecipeLine;
+DROP TABLE IF EXISTS Recipe;
+DROP TABLE IF EXISTS Candy;
+
+
+
+
+
+GO
+
+
+
+
+CREATE TABLE Candy (
+CandyID INT IDENTITY PRIMARY KEY,
+CandyName VARCHAR(50),
+CandyType VARCHAR(50),
+MinStock INT,
+MaxStock INT
+);
+
+GO
+
+CREATE TABLE Recipe (
+RecipeID INT IDENTITY PRIMARY KEY,
+CandyID INT,
+Difficulty INT,
+FOREIGN KEY (CandyID) REFERENCES Candy(CandyID)
+);
+
+GO
+
+CREATE TABLE RecipeLine (
+Ingredient VARCHAR(50),
+Quantity INT,
+RecipeID INT,
+FOREIGN KEY (RecipeID) REFERENCES Recipe(RecipeID)
+);
+
+GO
+
+CREATE TABLE ProdPlan(
+PlanID INT IDENTITY PRIMARY KEY,
+Date DATE
+);
+
+GO
+
+CREATE TABLE PlanItem(
+PlanID INT,
+RecipeID INT,
+Quantity INT
+);
+
+GO

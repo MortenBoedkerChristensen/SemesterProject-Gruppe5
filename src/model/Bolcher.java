@@ -4,8 +4,8 @@ import java.sql.Date;
 
 public class Bolcher extends Candy {
 
-    public Bolcher(int id, String type, int price, int stock, int minStock, int maxStock, Date date, String name) {
-        super(id, type, price, minStock, maxStock, date, stock, name);
+    public Bolcher(int id, String type, int price, int stock, int minStock, int maxStock,  String name) {
+        super(id, type, price, minStock, maxStock, stock, name);
     }
 /*
  * #TODO
@@ -18,7 +18,7 @@ public class Bolcher extends Candy {
             candy.getPrice(),              // price
             candy.getMinStock(),           // minStock
             candy.getMaxStock(),           // maxStock
-            new Date(System.currentTimeMillis()), // date
+          
             candy.getStock(),              // stock
             candy.getName()               // name
         );
