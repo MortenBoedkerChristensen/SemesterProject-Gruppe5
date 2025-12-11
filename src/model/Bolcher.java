@@ -7,7 +7,10 @@ public class Bolcher extends Candy {
     public Bolcher(int id, String type, int price, int stock, int minStock, int maxStock, Date date, String name) {
         super(id, type, price, minStock, maxStock, date, stock, name);
     }
-
+/*
+ * #TODO
+ * Remove recipe in subclass constructors
+ */
     public Bolcher(Candy candy, Recipe recipe) {
         super(
             recipe.getCandyID(),           // candyID
