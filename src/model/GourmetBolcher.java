@@ -8,16 +8,16 @@ public class GourmetBolcher extends Candy {
         super(id, type, price, minStock, maxStock, date, stock, name);
     }
 
-    public GourmetBolcher(Candy candy, Recipe recipe) {
+    public GourmetBolcher(Candy candy) {
         super(
-            recipe.getCandyID(),
+        	candy.getCandyID(),
             candy.getType(),
             candy.getPrice(),
             candy.getMinStock(),
             candy.getMaxStock(),
             new Date(System.currentTimeMillis()),
             candy.getStock(),
-            recipe.getName()
+            candy.getName()
         );
     }
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Recipe {
 	private int recipeID;
 	private Candy candy;
-	private String name;
+	//private String name;
 	private int difficulty;
 	private HashMap<String, Integer> ingridients;
 	/*
@@ -16,7 +16,7 @@ public class Recipe {
 	
 	public Recipe(int recipeID, String name, int difficulty) {
 		this.recipeID = recipeID;
-		this.name = name;
+		//this.name = name;
 		this.difficulty = difficulty;
 		ingridients = new HashMap<>();
 	}
@@ -39,7 +39,7 @@ public class Recipe {
 		this.candy = candy;
 	}
 
-
+/*
 	public String getName() {
 		return name;
 	}
@@ -49,7 +49,7 @@ public class Recipe {
 		this.name = name;
 	}
 
-
+*/
 	public int getDifficulty() {
 		return difficulty;
 	}
@@ -94,7 +94,7 @@ public class Recipe {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("CandyID: ").append(candy.getCandyID()).append("\n");
-		sb.append("Name: ").append(name).append("\n");
+		//sb.append("Name: ").append(name).append("\n");
 		sb.append("Difficulty: ").append(difficulty).append("\n");
 		sb.append("Ingredients:\n");
 		for (String ingredient : ingridients.keySet()) {

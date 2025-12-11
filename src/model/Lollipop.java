@@ -8,16 +8,16 @@ public class Lollipop extends Candy {
         super(id, type, price, minStock, maxStock, date, stock, name);
     }
 
-    public Lollipop(Candy candy, Recipe recipe) {
+    public Lollipop(Candy candy) {
         super(
-            recipe.getCandyID(),
+        	candy.getCandyID(),
             candy.getType(),
             candy.getPrice(),
             candy.getMinStock(),
             candy.getMaxStock(),
             new Date(System.currentTimeMillis()),
             candy.getStock(),
-            recipe.getName()
+            candy.getName()
         );
     }
 }

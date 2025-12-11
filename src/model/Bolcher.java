@@ -11,16 +11,16 @@ public class Bolcher extends Candy {
  * #TODO
  * Remove recipe in subclass constructors
  */
-    public Bolcher(Candy candy, Recipe recipe) {
+    public Bolcher(Candy candy) {
         super(
-            recipe.getCandyID(),           // candyID
+            candy.getCandyID(),           // candyID
             candy.getType(),               // type
             candy.getPrice(),              // price
             candy.getMinStock(),           // minStock
             candy.getMaxStock(),           // maxStock
             new Date(System.currentTimeMillis()), // date
             candy.getStock(),              // stock
-            recipe.getName()               // name
+            candy.getName()               // name
         );
     }
 }

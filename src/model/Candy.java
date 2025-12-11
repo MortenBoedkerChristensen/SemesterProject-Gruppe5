@@ -2,7 +2,7 @@ package model;
 
 import java.sql.Date;
 
-public class Candy {
+public abstract class Candy {
 
     private int candyID;
     private String type;
