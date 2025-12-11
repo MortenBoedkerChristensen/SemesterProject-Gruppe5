@@ -6,12 +6,7 @@ DROP TABLE IF EXISTS Recipe;
 DROP TABLE IF EXISTS Candy;
 
 
-
-
-
 GO
-
-
 
 
 CREATE TABLE Candy (
