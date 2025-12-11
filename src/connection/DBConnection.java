@@ -93,8 +93,16 @@ public class DBConnection {
 	}
 
 
-	public Connection getConnection() {
-		return connection;
+	public Connection getConnection() throws DataAccessException {
+	    try {
+	        return DriverManager.getConnection(
+	            String.format("jdbc:sqlserver://%s:%s;databaseName=%s;encrypt=false", SERVERNAME, PORTNUMBER, DBNAME),
+	            USERNAME, PASSWORD
+	        );
+	    } catch (SQLException e) {
+	        throw new DataAccessException("Could not open new connection", e);
+	    }
 	}
+
 
 }

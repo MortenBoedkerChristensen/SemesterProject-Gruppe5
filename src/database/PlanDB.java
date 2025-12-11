@@ -25,22 +25,16 @@ public class PlanDB implements PlanDAO {
 
     @Override
     public Plan create(Plan plan) throws DataAccessException {
-        // Only insert date; CandyID/LocationID are in PlanItem table
-        String sql = "INSERT INTO [Plan] (date) VALUES (?)";
-
+        String sql = "INSERT INTO [Plan] ([Date]) VALUES (?)"; // escaped table and column
         try (PreparedStatement stmt = dbConn.getConnection()
-                .prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-
+                .prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setDate(1, plan.getDate());
             stmt.executeUpdate();
-
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 plan.setPlanID(rs.getInt(1));
             }
-
             return plan;
-
         } catch (SQLException e) {
             throw new DataAccessException("Failed to create plan", e);
         }
@@ -62,7 +56,9 @@ public class PlanDB implements PlanDAO {
             Recipe recipe = recipeDB.getRecipeByCandyId(candy.getCandyID());
             if (recipe == null || employeeLevel < recipe.getDifficulty()) continue;
 
-            PlanItem item = new PlanItem(recipe, 1); // default qty = 1
+            PlanItem item = new PlanItem(recipe, candy, 1); // default qty = 1
+            item.setStatus(PlanItem.Status.STARTED); // valid enum
+            item.setEmployee(employee);
             plan.addItem(item);
 
             count++;
@@ -75,9 +71,7 @@ public class PlanDB implements PlanDAO {
     }
 
     public void savePlanWithItems(Plan plan) throws DataAccessException {
-        Connection conn = null;
         try {
-            conn = dbConn.getConnection();
             dbConn.startTransaction();
 
             create(plan); // insert Plan
@@ -85,22 +79,21 @@ public class PlanDB implements PlanDAO {
 
             dbConn.commitTransaction();
         } catch (SQLException e) {
-            if (conn != null) dbConn.rollbackTransaction();
+            dbConn.rollbackTransaction();
             throw new DataAccessException("Failed saving plan with items", e);
-        } finally {
-            if (conn != null) dbConn.commitTransaction();
         }
     }
 
-    private void insertPlanItems(int planID, List<PlanItem> items) throws SQLException {
-        String sql = "INSERT INTO PlanItem (planID, recipeID, qty, status) VALUES (?, ?, ?, ?)";
-
+    private void insertPlanItems(int planID, List<PlanItem> items) throws SQLException, DataAccessException {
+        String sql = "INSERT INTO [PlanItem] (PlanID, RecipeID, CandyID, Qty, Status, EmployeeID) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = dbConn.getConnection().prepareStatement(sql)) {
             for (PlanItem item : items) {
                 stmt.setInt(1, planID);
                 stmt.setInt(2, item.getRecipe().getRecipeID());
-                stmt.setInt(3, item.getQty());
-                stmt.setString(4, item.getStatus().name());
+                stmt.setInt(3, item.getCandy().getCandyID());
+                stmt.setInt(4, item.getQty());
+                stmt.setString(5, item.getStatus().name());
+                stmt.setInt(6, item.getEmployee().getEmployeeId());
                 stmt.addBatch();
             }
             stmt.executeBatch();
@@ -109,15 +102,15 @@ public class PlanDB implements PlanDAO {
 
     @Override
     public Plan findById(int id) throws DataAccessException {
-        String sql = "SELECT planID, date FROM Plan WHERE planID = ?";
+        String sql = "SELECT PlanID, [Date] FROM [Plan] WHERE PlanID = ?";
         try (PreparedStatement stmt = dbConn.getConnection().prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) return null;
 
             Plan plan = new Plan();
-            plan.setPlanID(rs.getInt("planID"));
-            plan.setDate(rs.getDate("date"));
+            plan.setPlanID(rs.getInt("PlanID"));
+            plan.setDate(rs.getDate("Date"));
             plan.setItems(loadPlanItems(id));
             return plan;
         } catch (SQLException e) {
@@ -126,21 +119,51 @@ public class PlanDB implements PlanDAO {
     }
 
     private List<PlanItem> loadPlanItems(int planID) throws SQLException, DataAccessException {
-        String sql = "SELECT recipeID, qty, status FROM PlanItem WHERE planID = ?";
+        String sql = "SELECT RecipeID, CandyID, Qty, Status, EmployeeID FROM [PlanItem] WHERE PlanID = ?";
         List<PlanItem> items = new ArrayList<>();
 
-        try (PreparedStatement stmt = dbConn.getConnection().prepareStatement(sql)) {
-            stmt.setInt(1, planID);
-            ResultSet rs = stmt.executeQuery();
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                Recipe recipe = recipeDB.findById(rs.getInt("recipeID"));
-                PlanItem item = new PlanItem(recipe, rs.getInt("qty"));
-                item.setStatus(PlanItem.Status.valueOf(rs.getString("status")));
-                items.add(item);
+            stmt.setInt(1, planID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    // load Recipe, Candy, Employee as before
+                    Recipe recipe = recipeDB.findById(rs.getInt("RecipeID"));
+                    Candy candy = candyDB.findById(rs.getInt("CandyID"));
+                    PlanItem item = new PlanItem(recipe, candy, rs.getInt("Qty"));
+                    item.setStatus(PlanItem.Status.valueOf(rs.getString("Status")));
+                    Employee employee = employeeDB.findById(rs.getInt("EmployeeID"));
+                    item.setEmployee(employee);
+                    items.add(item);
+                }
             }
         }
 
         return items;
     }
+
+    public List<Plan> getAllPlans() throws DataAccessException {
+        List<Plan> plans = new ArrayList<>();
+        String sql = "SELECT PlanID, [Date] FROM [Plan] ORDER BY PlanID DESC";
+
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Plan plan = new Plan();
+                plan.setPlanID(rs.getInt("PlanID"));
+                plan.setDate(rs.getDate("Date"));
+                plan.setItems(loadPlanItems(plan.getPlanID())); // still safe
+                plans.add(plan);
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("Failed to load all plans", e);
+        }
+        return plans;
+    }
+
+
+
 }

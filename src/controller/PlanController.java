@@ -1,9 +1,9 @@
 package controller;
 
+import java.util.List;
 import connection.DataAccessException;
 import database.PlanDB;
 import model.Plan;
-import model.PlanItem;
 
 public class PlanController {
 
@@ -13,20 +13,11 @@ public class PlanController {
         planDB = new PlanDB();
     }
 
-    public String createPlannedProductionForEmployee(String employeeName, int maxCandies) throws DataAccessException {
-        Plan plan = planDB.createPlannedProductionForEmployee(employeeName, maxCandies);
+    public Plan createPlannedProductionForEmployee(String employeeName, int maxItems) throws DataAccessException {
+        return planDB.createPlannedProductionForEmployee(employeeName, maxItems);
+    }
 
-        if (plan == null || plan.getItems().isEmpty()) {
-            return "Ingen plan blev oprettet.";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (PlanItem item : plan.getItems()) {
-            sb.append("Candy: ").append(item.getRecipe().getName())
-              .append(", Qty: ").append(item.getQty())
-              .append(", Status: ").append(item.getStatus()).append("\n");
-        }
-
-        return sb.toString();
+    public List<Plan> getAllPlans() throws DataAccessException {
+        return planDB.getAllPlans();
     }
 }
