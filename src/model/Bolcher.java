@@ -10,7 +10,7 @@ public class Bolcher extends Candy {
 
     public Bolcher(Candy candy, Recipe recipe) {
         super(
-            recipe.getCandyID(),           // candyID
+            recipe.getRecipeID(),           // candyID
             candy.getType(),               // type
             candy.getPrice(),              // price
             candy.getMinStock(),           // minStock

@@ -11,7 +11,7 @@ import javax.swing.SwingWorker;
 import javax.swing.JScrollPane;
 
 import connection.DataAccessException;
-import database.PlanDB;
+import controller.PlanController;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
@@ -23,17 +23,15 @@ public class PlanGui extends JFrame {
     private JPanel contentPane;
     private JTextField employeeField;
     private JTextArea outputArea;
-    private JButton btnGeneratePlan; // made a field so SwingWorker can re-enable it
+    private JButton btnGeneratePlan;
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    PlanGui frame = new PlanGui();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                PlanGui frame = new PlanGui();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -58,21 +56,21 @@ public class PlanGui extends JFrame {
         JScrollPane scrollPane = new JScrollPane(outputArea);
         contentPane.add(scrollPane);
 
-        btnGeneratePlan.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String employeeName = employeeField.getText(); // get the typed name
-                if (employeeName.isEmpty()) {
-                    outputArea.setText("Skriv venligst et medarbejdernavn.");
-                    return;
-                }
-
-                // disable button and run background worker
-                btnGeneratePlan.setEnabled(false);
-                outputArea.setText("Genererer plan...");
-                new PlanSwingWorker(employeeName, 5).execute();
+        btnGeneratePlan.addActionListener(e -> {
+            String employeeName = employeeField.getText().trim();
+            if (employeeName.isEmpty()) {
+                outputArea.setText("Skriv venligst et medarbejdernavn.");
+                return;
             }
+
+            btnGeneratePlan.setEnabled(false);
+            outputArea.setText("Genererer plan...");
+
+            // Run background task via SwingWorker
+            new PlanSwingWorker(employeeName, 5).execute();
         });
     }
+
     private class PlanSwingWorker extends SwingWorker<String, Void> {
         private final String employeeName;
         private final int maxItems;
@@ -82,23 +80,27 @@ public class PlanGui extends JFrame {
             this.maxItems = maxItems;
         }
 
-		@Override
-		protected String doInBackground() throws Exception {
-			PlanDB planDB = new PlanDB();
-			// run blocking DB call off the EDT
-			return planDB.createPlannedProductionForEmployee(employeeName, maxItems);
-		}
-		@Override
-		protected void done() {
-		    try {
-		        String result = get();
-		        outputArea.setText(result);
-		    } catch (Exception e) {
-		        outputArea.setText("Fejl: " + e.getMessage());
-		        e.printStackTrace();
-		    } finally {
-		        btnGeneratePlan.setEnabled(true);
-		    }
-		}
-}
+        @Override
+        protected String doInBackground() {
+            try {
+                PlanController controller = new PlanController();
+                return controller.createPlannedProductionForEmployee(employeeName, maxItems);
+            } catch (DataAccessException e) {
+                e.printStackTrace();
+                return "Fejl ved databaseadgang: " + e.getMessage();
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                outputArea.setText(get());
+            } catch (Exception e) {
+                outputArea.setText("Fejl: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                btnGeneratePlan.setEnabled(true);
+            }
+        }
+    }
 }

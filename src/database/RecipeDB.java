@@ -24,6 +24,36 @@ public class RecipeDB {
      * #TODO
      * Opdater til nuværende version af Recipe
      */
+    public Recipe findById(int recipeId) throws DataAccessException {
+        Recipe recipe = null;
+
+        String sql = "SELECT Name, Niveau, Ingredients, QtyID " +
+                     "FROM Recipe WHERE RecipeID = ?";
+
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, recipeId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    if (recipe == null) {
+                        recipe = new Recipe(
+                                recipeId,
+                                rs.getString("Name"),
+                                rs.getInt("Niveau")
+                        );
+                    }
+                    recipe.addIngridient(rs.getString("Ingredients"), rs.getInt("QtyID"));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to load recipe with ID " + recipeId, e);
+        }
+
+        return recipe;
+    }
 
     public Recipe getRecipeByCandyId(int candyId) throws DataAccessException {
         Recipe recipe = null;

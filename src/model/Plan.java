@@ -1,31 +1,21 @@
 package model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Plan {
 
     private int planID;
     private Date date;
-    private List<PlanItem> plan;
-    /*
-     * #TODO
-     * Metoder til at håndtere PlanItem
-     * Display af aktiv plan => UI
-     */
-    
-  /*  private int locationID;     // matches SQL table
-    private int candyID;        // matches SQL table
-    private Recipes recipe;     // single recipe per candy
-*/
-    // Enum for status
-    
 
-    // Constructors
+    // Indeholder alle PlanItems for denne plan
+    private List<PlanItem> items = new ArrayList<>();
+
     public Plan() {}
 
-    public Plan(List<PlanItem> plan) {
-        this.plan = plan;
+    public Plan(Date date) {
+        this.date = date;
     }
 
     // ----- ID -----
@@ -45,50 +35,43 @@ public class Plan {
     public void setDate(Date date) {
         this.date = date;
     }
-    
-    public List<PlanItem> getPlan() {
-    	return plan;
-    }
-    
-    public PlanItem getPlanItem(int index) {
-    	return plan.get(index);
+
+    // ----- PLAN ITEMS -----
+    public List<PlanItem> getItems() {
+        return items;
     }
 
-    /*
-    // ----- STATUS -----
-    public Status getStatus() {
-        return status;
+    public void setItems(List<PlanItem> items) {
+        this.items = items;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void addItem(PlanItem item) {
+        items.add(item);
     }
 
-    // ----- LOCATION -----
-    public int getLocationID() {
-        return locationID;
+    public void removeItem(PlanItem item) {
+        items.remove(item);
     }
 
-    public void setLocationID(int locationID) {
-        this.locationID = locationID;
-    }
-    
-
-    // ----- CANDY -----
-    public int getCandyID() {
-        return candyID;
+    public PlanItem getItem(int index) {
+        return items.get(index);
     }
 
-    public void setCandyID(int candyID) {
-        this.candyID = candyID;
+    // Find recipe by ID
+    public PlanItem findItemByRecipeId(int recipeId) {
+        for (PlanItem item : items) {
+            if (item.getRecipe().getRecipeID() == recipeId) {
+                return item;
+            }
+        }
+        return null;
     }
 
-    // ----- RECIPE -----
-    public Recipe getRecipe() {
-        return recipe;
+    // Update qty for specific recipe
+    public void updateQty(int recipeId, int qty) {
+        PlanItem item = findItemByRecipeId(recipeId);
+        if (item != null) {
+            item.setQty(qty);
+        }
     }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    } */
 }

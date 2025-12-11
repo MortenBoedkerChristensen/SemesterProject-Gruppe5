@@ -22,12 +22,12 @@ public class Recipe {
 	}
 
 	
-	public int getCandyID() {
+	public int getRecipeID() {
 		return recipeID;
 	}
 
 
-	public void setCandyID(int recipeID) {
+	public void setRecipeID(int recipeID) {
 		this.recipeID = recipeID;
 	}
 
