@@ -9,7 +9,6 @@ public class Plan {
     private int planID;
     private Date date;
 
-    // Indeholder alle PlanItems for denne plan
     private List<PlanItem> items = new ArrayList<>();
 
     public Plan() {}
@@ -19,43 +18,20 @@ public class Plan {
     }
 
     // ----- ID -----
-    public int getPlanID() {
-        return planID;
-    }
-
-    public void setPlanID(int planID) {
-        this.planID = planID;
-    }
+    public int getPlanID() { return planID; }
+    public void setPlanID(int planID) { this.planID = planID; }
 
     // ----- DATE -----
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    public Date getDate() { return date; }
+    public void setDate(Date date) { this.date = date; }
 
     // ----- PLAN ITEMS -----
-    public List<PlanItem> getItems() {
-        return items;
-    }
+    public List<PlanItem> getItems() { return items; }
+    public void setItems(List<PlanItem> items) { this.items = items; }
 
-    public void setItems(List<PlanItem> items) {
-        this.items = items;
-    }
-
-    public void addItem(PlanItem item) {
-        items.add(item);
-    }
-
-    public void removeItem(PlanItem item) {
-        items.remove(item);
-    }
-
-    public PlanItem getItem(int index) {
-        return items.get(index);
-    }
+    public void addItem(PlanItem item) { items.add(item); }
+    public void removeItem(PlanItem item) { items.remove(item); }
+    public PlanItem getItem(int index) { return items.get(index); }
 
     // Find recipe by ID
     public PlanItem findItemByRecipeId(int recipeId) {
