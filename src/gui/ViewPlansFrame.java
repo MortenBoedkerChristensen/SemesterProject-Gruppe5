@@ -1,6 +1,10 @@
 package gui;
 
 import javax.swing.*;
+
+import connection.DataAccessException;
+import controller.PlanController;
+
 import java.awt.*;
 import java.util.List;
 
@@ -25,33 +29,15 @@ public class ViewPlansFrame extends JFrame {
     }
 
     private void displayPlans(List<Plan> plans) {
-        if (plans == null || plans.isEmpty()) {
-            outputArea.setText("Ingen planer fundet.");
-            return;
+        try {
+            PlanController controller = new PlanController();
+            String formattedText = controller.formatPlans(plans);
+            outputArea.setText(formattedText);
+        } catch (DataAccessException e) {
+            outputArea.setText("Fejl ved databaseadgang: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        StringBuilder sb = new StringBuilder();
-
-        for (Plan plan : plans) {
-            sb.append("Plan ID: ").append(plan.getPlanID())
-              .append(", Dato: ").append(plan.getDate()).append("\n");
-
-            for (PlanItem item : plan.getItems()) {
-                sb.append("  Candy: ").append(item.getCandy().getName())
-                  .append(", Recipe: ").append(item.getRecipe().getName())
-                  .append(", Qty: ").append(item.getQty())
-                  .append(", Ingredients: ");
-
-                item.getRecipe().getIngridients().forEach((ing, qty) ->
-                    sb.append(ing).append(" ").append(qty).append(", ")
-                );
-                sb.setLength(sb.length() - 2); // remove trailing comma
-                sb.append("\n");
-            }
-
-            sb.append("\n");
-        }
-
-        outputArea.setText(sb.toString());
     }
+
+
 }

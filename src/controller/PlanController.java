@@ -48,5 +48,36 @@ public class PlanController {
 
         return sb.toString();
     }
+    public String formatPlans(List<Plan> plans) {
+        if (plans == null || plans.isEmpty()) {
+            return "Ingen planer fundet.";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Plan plan : plans) {
+            sb.append("Plan ID: ").append(plan.getPlanID())
+              .append(", Dato: ").append(plan.getDate()).append("\n");
+
+            for (PlanItem item : plan.getItems()) {
+                sb.append("  Candy: ").append(item.getCandy().getName())
+                  .append(", Recipe: ").append(item.getRecipe().getName())
+                  .append(", Qty: ").append(item.getQty())
+                  .append(", Ingredients: ");
+
+                item.getRecipe().getIngridients().forEach((ing, qty) ->
+                    sb.append(ing).append(" ").append(qty).append(", ")
+                );
+
+                sb.setLength(sb.length() - 2);
+                sb.append("\n");
+            }
+
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+
 
 }
