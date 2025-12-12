@@ -56,22 +56,4 @@ public class Plan {
     public PlanItem getItem(int index) {
         return items.get(index);
     }
-
-    // Find recipe by ID
-    public PlanItem findItemByRecipeId(int recipeId) {
-        for (PlanItem item : items) {
-            if (item.getRecipe().getRecipeID() == recipeId) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    // Update qty for specific recipe
-    public void updateQty(int recipeId, int qty) {
-        PlanItem item = findItemByRecipeId(recipeId);
-        if (item != null) {
-            item.setQty(qty);
-        }
-    }
 }

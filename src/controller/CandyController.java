@@ -17,14 +17,7 @@ public class CandyController {
         candydb = new CandyDB();
     }
     
-    public Candy addCandy(
-            String type, 
-            String name,
-            int price, 
-            int stock, 
-            int minStock, 
-            int maxStock
-    ) throws DataAccessException {
+    public Candy addCandy(String type, int price, int stock, int minStock, int maxStock, String name) throws DataAccessException {
 
         java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
         Candy candy;
@@ -58,17 +51,6 @@ public class CandyController {
 
     public List<Candy> getAllLowStockCandy() throws DataAccessException {
         List<Candy> lowStockList = candydb.getLowStockCandy();
-
-      /*  // Henter alle candy fra databasen
-        List<Candy> allCandy = candydb.getAllCandy();
-
-        // Finder candy hvor stock < minStock
-        for (Candy c : allCandy) {
-            if (c.getStock() < c.getMinStock()) {
-                lowStockList.add(c);
-            }
-        } */
-
         return lowStockList;
     }
 }

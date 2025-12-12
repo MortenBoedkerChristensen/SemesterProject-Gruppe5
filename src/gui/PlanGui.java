@@ -74,30 +74,7 @@ public class PlanGui extends JFrame {
             protected String doInBackground() {
                 try {
                     PlanController controller = new PlanController();
-                    Plan plan = controller.createPlannedProductionForEmployee(employeeName, 5);
-
-                    if (plan == null || plan.getItems().isEmpty()) {
-                        return "Ingen plan blev oprettet.";
-                    }
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("Plan ID: ").append(plan.getPlanID())
-                      .append(", Dato: ").append(plan.getDate()).append("\n\n");
-
-                    for (PlanItem item : plan.getItems()) {
-                        sb.append("Candy: ").append(item.getCandy().getName())
-                          .append(", Recipe: ").append(item.getRecipe().getName())
-                          .append(", Qty: ").append(item.getQty())
-                          .append(", Ingredients: ");
-
-                        item.getRecipe().getIngridients().forEach((ing, qty) ->
-                            sb.append(ing).append(" ").append(qty).append(", ")
-                        );
-                        sb.setLength(sb.length() - 2);
-                        sb.append("\n");
-                    }
-
-                    return sb.toString();
+                    return controller.createProductionPlanText(employeeName, 5);
                 } catch (DataAccessException ex) {
                     ex.printStackTrace();
                     return "Fejl ved databaseadgang: " + ex.getMessage();
